@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -8,7 +9,19 @@ const theme = createTheme({
             dark: '#008600',
             contrastText: '#fff',
         },
-    }
+    },
+    components: {
+        MuiLink: {
+          defaultProps: {
+            component: Link,
+          },
+        },
+        MuiButtonBase: {
+          defaultProps: {
+            LinkComponent: Link,
+          },
+        },
+      },
 });
 
 export default theme;

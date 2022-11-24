@@ -1,7 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { List, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import PrintIcon from '@mui/icons-material/Print';
@@ -28,13 +27,13 @@ export default function MenuList() {
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
-        <ListItemButton>
+        <ListItemButton component={Link} to="/">
           <ListItemIcon sx={{minWidth}}>
             <PersonalVideoIcon />
           </ListItemIcon>
           <ListItemText primary="Equipos" />
         </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={Link} to="/impresoras">
         <ListItemIcon sx={{minWidth}}>
           <PrintIcon />
         </ListItemIcon>
@@ -49,25 +48,25 @@ export default function MenuList() {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: paddingLeft }}>
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/organizaciones">
               <ListItemIcon sx={{minWidth}}>
                 <CorporateFareIcon />
               </ListItemIcon>
               <ListItemText primary="Organizaciones" />
             </ListItemButton>
-            <ListItemButton sx={{ pl: paddingLeft }}>
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/usuarios">
               <ListItemIcon sx={{minWidth}}>
                 <PeopleAltIcon />
               </ListItemIcon>
               <ListItemText primary="Usuarios" />
             </ListItemButton>
-            <ListItemButton sx={{ pl: paddingLeft }}>
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/marcas">
               <ListItemIcon sx={{minWidth}}>
                 <DvrIcon />
               </ListItemIcon>
               <ListItemText primary="Marcas" />
             </ListItemButton>
-            <ListItemButton sx={{ pl: paddingLeft }}>
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/informacion">
               <ListItemIcon sx={{minWidth}}>
                 <BackupTableIcon />
               </ListItemIcon>
