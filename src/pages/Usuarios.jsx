@@ -1,0 +1,101 @@
+import { useState } from "react";
+import { Button, Grid } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ProviderFormUsuarios, { contextFormUsuarios } from "context/contextFormUsuarios";
+import MenuApp, { useMenu } from "component/MenuApp";
+import Tabla, { useTabla } from "component/Tabla";
+import Modal, { useModal } from "component/Modal";
+import Alerts, { useAlerts } from "component/Alerts";
+import { useEffect } from "react";
+import { InputTexto } from "component/inputs";
+import { FormUsuarios } from "component/forms";
+import { useRequest } from "utils/useRequest";
+
+const menu = [
+    "Actualizar",
+    "Detalles"
+]
+const columns = [
+    { id: 'nombre', label: 'Nombre' },
+    { id: 'cargo', label: 'Cargo' },
+    { id: 'empresa', label: 'Empresa' },
+    { id: 'departamento', label: 'Departamento' },
+];
+
+export function Usuarios() {
+
+    const modalState = useModal();
+    const alertState = useAlerts();
+    const tablaState = useTabla();
+    const menuState = useMenu();
+
+    const id = tablaState.selected;
+
+    const [search, setSearch] = useState('');
+    const handlerSearch = (busqueda) => {
+        tablaState.handleSelected(id)
+        setSearch(busqueda);
+    }
+    const { data: usuarios, getPaginations: getUsuarios, post: postUsuarios, put: putUsuarios } = useRequest("usuarios/");
+
+    useEffect(() => {
+        getUsuarios(tablaState, search);
+    }, [search, tablaState.page, tablaState.rowsPerPage])
+
+    return (
+        <>
+            <Grid
+                container
+                columnSpacing={3}
+                rowSpacing={3}
+            >
+                        <Grid item >
+                            <Button
+                                variant="outlined"
+                                onClick={modalState.handleContent}
+                            >
+                                Agregar
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="outlined"
+                                disabled={!id ? true : false}
+                                endIcon={<KeyboardArrowDownIcon />}
+                                onClick={menuState.handleAnchorEl}
+                            >
+                                Acciones
+                            </Button>
+                        </Grid>
+                        <Grid item >
+                            <InputTexto
+                                label="Seach"
+                                accion={handlerSearch}
+                                property="search"
+                            />
+                        </Grid>
+                        <ProviderFormUsuarios>
+                            <Modal
+                                state={modalState}
+                                title={`${modalState.content} usuario`}
+                                confirn={!id ? postUsuarios : (usuario) => putUsuarios(usuario, id)}
+                                alert={alertState.handleOpen}
+                                context={contextFormUsuarios}
+                            >
+                                <FormUsuarios id={id} />
+                            </Modal>
+                            <Alerts state={alertState} />
+                        </ProviderFormUsuarios>
+                    </Grid>
+                <Grid item sm={12}>
+                    <Tabla
+                        columns={columns}
+                        rows={usuarios}
+                        state={tablaState}
+                        menu={menuState.handleAnchorEl}
+                    />
+                    <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
+                </Grid>
+        </>
+    );
+}
