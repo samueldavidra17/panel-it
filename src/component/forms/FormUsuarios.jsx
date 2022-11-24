@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import axios from "axios";
+import axios from "utils/axioIntance";
 import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
 import { contextFormUsuarios } from 'context/contextFormUsuarios';
@@ -14,7 +14,7 @@ export function FormUsuarios({ id }) {
 
     const getUsuario = async () => {
         try {
-            const usuario = await axios.get(process.env.API_BACK_URL + `usuarios/${id}/`);
+            const usuario = await axios.get(`usuarios/${id}/`);
             dispatch(setUsuario(usuario.data));
         } catch (error) {
             console.log(error);
@@ -24,7 +24,7 @@ export function FormUsuarios({ id }) {
     const [opciones, setOpciones] = useState({});
     const getOpciones = async () => {
         try {
-            const empresas = await axios.get(process.env.API_BACK_URL + 'empresas/');
+            const empresas = await axios.get('empresas/');
             setOpciones({empresas: empresas.data});
         } catch (error) {
             console.log(error);
@@ -33,7 +33,7 @@ export function FormUsuarios({ id }) {
 
     const opcionesDepartamentos = async (value) => {
         try {
-            const departamentos = await axios.get(process.env.API_BACK_URL + 'departamentos/', { 
+            const departamentos = await axios.get('departamentos/', { 
                 params: { empresas: value } 
             });
             setOpciones({ ...opciones, departamentos: departamentos.data });

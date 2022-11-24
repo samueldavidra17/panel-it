@@ -1,9 +1,7 @@
 import { Grid, List, ListItem, ListItemText } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Container } from '@mui/system';
-import axios from 'axios';
+import axios from 'utils/axioIntance';
 import { contextFormEquipos } from 'context/contextFormEquipos';
 import { useContext, useEffect } from 'react';
 import { setEquipo, setInformacion } from 'reducer/reducerEquipo';
@@ -14,7 +12,7 @@ export default function InformacionEquipos({ id }) {
 
     const getEquipo = async () => {
         try {
-            const res = await axios.get(process.env.API_BACK_URL + `equipos/${id}`);
+            const res = await axios.get(`equipos/${id}`);
             const equipo = { ...res.data }
             const informacion = { ...res.data.informacion }
             dispatch(setEquipo(equipo));

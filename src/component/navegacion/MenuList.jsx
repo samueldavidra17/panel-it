@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { List, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
+import { List, ListItemButton, ListItemIcon, ListItemText, Collapse, Icon } from '@mui/material';
 import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import PrintIcon from '@mui/icons-material/Print';
+import MouseIcon from '@mui/icons-material/Mouse';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import DvrIcon from '@mui/icons-material/Dvr';
@@ -38,6 +39,20 @@ export default function MenuList() {
           <PrintIcon />
         </ListItemIcon>
         <ListItemText primary="Impresoras" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/dispositivos">
+        <ListItemIcon sx={{minWidth}}>
+          <MouseIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dispositivos" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/glpi">
+        <ListItemIcon sx={{ minWidth }}>
+          <Icon>
+            <img src={"./glpi.png"} height={25} width={25} />
+          </Icon>
+        </ListItemIcon>
+        <ListItemText primary="GLPI" />
       </ListItemButton>
       <ListItemButton onClick={handleClick} >
         <ListItemIcon sx={{minWidth}}>

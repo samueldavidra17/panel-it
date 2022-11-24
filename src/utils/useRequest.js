@@ -36,7 +36,7 @@ export function useRequest(uri){
             const res = await axios.post(uri, data);
             if(res.status !== 201)
                 return { error: true, message: 'Ha ocurrido un error' };
-        
+            get();
             return { error: false, message: 'Se ha agregado un equipo nuevo' };                
         } catch (error) {
             console.log(error);
@@ -48,7 +48,7 @@ export function useRequest(uri){
             const res = await axios.put(`${uri+id}/`, data);
             if(res.status !== 200) 
                 return { error: true, message: 'Ha ocurrido un error' };
-
+            get();
             return { error: false, message: 'Se han actualizado los datos del equipo' };
         } catch (error) {
             console.log(error);

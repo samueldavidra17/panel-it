@@ -11,7 +11,6 @@ export function FormInformaciones( { id, content }) {
     const getInfo = async () => {
         try {
             const info = await axios.get(`/${content.toLowerCase().replace(/\s+/g, '')}/${id}/`);
-            console.log(info)
             changeState(info.data.nombre);
         } catch (error) {
             console.log(error);

@@ -48,9 +48,9 @@ export function Equipos() {
     const { data: equipos, getPaginations: getEquipos, post: postEquipos, put: putEquipos } = useRequest("equipos/");
     const { put: putInformacion } = useRequest("informacion/");
     
-    const patchUsuarioEquipo = async ({ equipo: { usuariosforeignkey } }) => {
+    const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
         try {
-            const res = await axios.patch(`equipos/${id}/`, {usuariosforeignkey});
+            const res = await axios.patch(`equipos/${id}/`, {usuarios});
             if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
             getEquipos();
             return { error: false, message: 'Se ha asignado el usuario al equipo' };

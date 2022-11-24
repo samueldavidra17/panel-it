@@ -140,6 +140,7 @@ const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
                                                         <TableCell>{historyRow.usuario}</TableCell>
                                                         <TableCell>{historyRow.cargo}</TableCell>
                                                         <TableCell>{historyRow.departamento}</TableCell>
+                                                        <TableCell>{historyRow.observacion}</TableCell>
                                                     </TableRow>
                                                 )) 
                                             }

@@ -12,8 +12,7 @@ import { FormUsuarios } from "component/forms";
 import { useRequest } from "utils/useRequest";
 
 const menu = [
-    "Actualizar",
-    "Detalles"
+    "Actualizar"
 ]
 const columns = [
     { id: 'nombre', label: 'Nombre' },
@@ -57,14 +56,13 @@ export function Usuarios() {
                                 Agregar
                             </Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item >
                             <Button
                                 variant="outlined"
                                 disabled={!id ? true : false}
-                                endIcon={<KeyboardArrowDownIcon />}
-                                onClick={menuState.handleAnchorEl}
+                                onClick={modalState.handleContent}
                             >
-                                Acciones
+                                Actualizar
                             </Button>
                         </Grid>
                         <Grid item >
@@ -82,7 +80,7 @@ export function Usuarios() {
                                 alert={alertState.handleOpen}
                                 context={contextFormUsuarios}
                             >
-                                <FormUsuarios id={id} />
+                                <FormUsuarios id={modalState.content.toUpperCase() !== "AGREGAR" ? id : null} />
                             </Modal>
                             <Alerts state={alertState} />
                         </ProviderFormUsuarios>

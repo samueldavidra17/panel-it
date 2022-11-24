@@ -29,7 +29,7 @@ export const reducerEquipo = (state, action) => {
         case typeEquipos.CHANGE_PROPERTY_INFORMACION:
             return { ...state, informacion: { ...state.informacion, [action.payload.property]: action.payload.value } };
         case typeEquipos.CHANGE_USUARIO:
-            return { ...state, equipo: { ...state.equipo, usuariosforeignkey: action.payload } };
+            return { ...state, equipo: { ...state.equipo, usuarios: action.payload } };
         case typeEquipos.CLEAR_STATE:
             return { ...initialFormEquipos };
         default:
