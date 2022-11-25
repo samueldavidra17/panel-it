@@ -3,6 +3,7 @@ import theme from 'utils/theme';
 import Router from 'Router';
 
 function App() {
+  
   return (
     <ThemeProvider theme={theme}>
        <Router />

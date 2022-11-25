@@ -28,7 +28,7 @@ export default function MenuList() {
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
-        <ListItemButton component={Link} to="/">
+        <ListItemButton component={Link} to="/equipos">
           <ListItemIcon sx={{minWidth}}>
             <PersonalVideoIcon />
           </ListItemIcon>
@@ -49,7 +49,7 @@ export default function MenuList() {
       <ListItemButton component={Link} to="/glpi">
         <ListItemIcon sx={{ minWidth }}>
           <Icon>
-            <img src={"./glpi.png"} height={25} width={25} />
+            <img alt="glpi" src={"./glpi.png"} height={25} width={25} />
           </Icon>
         </ListItemIcon>
         <ListItemText primary="GLPI" />
