@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'utils/axioIntance';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Equipos, Informacion, Login, Marcas, Organizaciones, Usuarios } from "pages";
+import { Equipos, Impresoras, Informacion, Login, Marcas, Organizaciones, Usuarios } from "pages";
 import NavBar from "component/navegacion/NavBar";
 
 const AppRoute = () => {
@@ -28,6 +28,7 @@ const AppRoute = () => {
       <Routes>
         <Route exact path="equipos" element={<Equipos />} />
         <Route exact path="login" element={<Login />} />
+        <Route exact path="impresoras" element={<Impresoras />} />
         <Route exact path="informacion" element={<Informacion />} />
         <Route exact path="marcas" element={<Marcas />} />
         <Route exact path="organizaciones" element={<Organizaciones />} />
