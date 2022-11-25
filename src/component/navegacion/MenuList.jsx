@@ -58,8 +58,8 @@ export default function MenuList() {
         <ListItemIcon sx={{minWidth}}>
           <DisplaySettingsIcon />
         </ListItemIcon>
-        <ListItemText primary="Administración" />
-        {open ? <ExpandLess sx={{marginLeft: 2  }}/> : <ExpandMore />}
+        <ListItemText primary="Administración" sx={{marginRight: 15 }}/>
+        {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
