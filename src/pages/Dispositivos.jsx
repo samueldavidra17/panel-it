@@ -14,15 +14,12 @@ import { useRequest } from 'utils/useRequest';
 
 
 const columns = [
-    { id: 'usuario_so', label: 'Nombre Equipo' },
-    { id: 'usuario', label: 'Usuario Responsable' },
-    { id: 'ubicacion', label: 'Ubicación' },
-    { id: 'departamento', label: 'Departamento' },
-    { id: 'serial', label: 'Serial' },
-    { id: 'csb', label: 'CSB' },
     { id: 'tipo_equipo', label: 'Tipo Equipo' },
+    {id: 'marca', label: 'Marca' },
     { id: 'modelo', label: 'Modelo' },
-    {id: 'marca', label: 'Marca' }
+    { id: 'serial', label: 'Serial' },
+    { id: 'usuario', label: 'Usuario Asignado' },
+    { id: 'departamento', label: 'Departamento' }
 ];
 const menu = [
     "Actualizar",
@@ -45,7 +42,7 @@ export function Dispositivos() {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
-    const { data: dispositivos, getPaginations: getDispositivos, post: postDispositivos, put: putDispositivos } = useRequest("dispositivos/");
+    const { data: dispositivos, get: getDispositivos, post: postDispositivos, put: putDispositivos } = useRequest("dispositivos/");
     const { put: putInformacion } = useRequest("informacion/");
     
     // const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
@@ -94,9 +91,9 @@ export function Dispositivos() {
     // }
 
 
-    // useEffect(() => {
-    //     getDispositivos(tablaState, search);
-    // }, [search, tablaState.page, tablaState.rowsPerPage]);
+    useEffect(() => {
+        getDispositivos();
+    }, [search, tablaState.page, tablaState.rowsPerPage]);
 
     return (
         <>

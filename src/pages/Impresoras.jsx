@@ -14,15 +14,17 @@ import { useRequest } from 'utils/useRequest';
 
 
 const columns = [
-    { id: 'usuario_so', label: 'Nombre Equipo' },
-    { id: 'usuario', label: 'Usuario Responsable' },
-    { id: 'ubicacion', label: 'Ubicación' },
-    { id: 'departamento', label: 'Departamento' },
+    { id: 'tipo_impresora', label: 'Tipo Impresora' },
+    { id: 'marca', label: 'Marca' },
+    { id: 'modelo', label: 'Modelo' },
     { id: 'serial', label: 'Serial' },
     { id: 'csb', label: 'CSB' },
-    { id: 'tipo_equipo', label: 'Tipo Equipo' },
-    { id: 'modelo', label: 'Modelo' },
-    {id: 'marca', label: 'Marca' }
+    { id: 'tipo_conexion', label: 'Tipo conexión' },
+    { id: 'ip', label: 'IP' },
+    { id: 'departamento', label: 'Departamento' },
+    { id: 'ubicacion', label: 'Ubicacion' },
+    {id: 'toner', label: 'Toner' },
+    {id: 'estatus', label: 'Estatus' },
 ];
 const menu = [
     "Actualizar",
@@ -45,7 +47,7 @@ export function Impresoras() {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
-    const { data: impresoras, getPaginations: getImpresoras, post: postImpresoras, put: putImpresoras } = useRequest("impresoras/");
+    const { data: impresoras, get: getImpresoras, post: postImpresoras, put: putImpresoras } = useRequest("impresoras/");
     const { put: putInformacion } = useRequest("informacion/");
     
     // const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
@@ -94,9 +96,9 @@ export function Impresoras() {
     // }
 
 
-    // useEffect(() => {
-    //     getImpresoras(tablaState, search);
-    // }, [search, tablaState.page, tablaState.rowsPerPage]);
+    useEffect(() => {
+        getImpresoras();
+    }, [search, tablaState.page, tablaState.rowsPerPage]);
 
     return (
         <>

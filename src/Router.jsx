@@ -22,7 +22,7 @@ const AppRoute = () => {
     }
   }
 
-  getSesion();
+  // getSesion();
   return (
     <NavBar onContextMenu={(e) => console.log(e)}>
       <Routes>
