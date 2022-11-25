@@ -4,4 +4,5 @@ export * from "./Marcas";
 export * from "./Organizaciones";
 export * from "./Login";
 export * from "./Usuarios";
+export * from "./Dispositivos";
 export * from "./Impresoras";

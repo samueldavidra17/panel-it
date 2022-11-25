@@ -37,11 +37,11 @@ export const reducerImpresora = (state, action) => {
     }
 }
 
-export const setEquipo = (value) => {
+export const setImpresora = (value) => {
     return {type: typeImpresoras.SET_IMPRESORA, payload: value}
 }
 
-export const changePropertyEquipo = (value) => {
+export const changePropertyImpresora = (value) => {
     return {type: typeImpresoras.CHANGE_PROPERTY_IMPRESORA, payload: value}
 }
 
