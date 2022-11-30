@@ -135,8 +135,8 @@ const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
                                         <TableBody>
                                             {/*  aqui las filas*/
                                                 historyList.map((historyRow) => (
-                                                    <TableRow key={historyRow.date}>
-                                                        <TableCell>{historyRow.fecha}</TableCell>
+                                                    <TableRow key={historyRow.fecha}>
+                                                        <TableCell>{new Date(Date.parse(historyRow.fecha)).toLocaleDateString('en-US')}</TableCell>
                                                         <TableCell>{historyRow.usuario}</TableCell>
                                                         <TableCell>{historyRow.cargo}</TableCell>
                                                         <TableCell>{historyRow.departamento}</TableCell>

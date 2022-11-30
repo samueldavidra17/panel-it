@@ -3,17 +3,12 @@ import { typeImpresoras } from "./action";
 export const initialFormImpresoras = {
     impresora: {
         serial: "",
-        serial_cargador: "",
-        serial_unidad: "",
-        dd: "",
-        ram: "",
-        tipo_ram: "",
         csb: "",
-        antivirus: "",
-        so: "",
-        modelo: null,
-        empresa: null,
-        usuarios: null
+        toner: "",
+        ip: "",
+        tipo_conexion: "",
+        modelos: null,
+        departamento: null
     },
     informacion: {}
 }

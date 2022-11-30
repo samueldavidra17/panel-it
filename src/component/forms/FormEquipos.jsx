@@ -28,7 +28,11 @@ export function FormEquipos({ id }) {
 
   const getOpciones = async () => {
     try {
-      const equipos = await axios.get('tiposequipos/');
+      const equipos = await axios.get('tiposequipos/',{
+        params: {
+          search: "E"
+        }
+      });
       const empresas = await axios.get('empresas/');
       const combox = await axios.get('combox/');
       setOpciones({

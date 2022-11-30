@@ -27,7 +27,7 @@ export function Marcas() {
     const alertState = useAlerts();
 
     const {data: tiposEquipos, get: getTiposEquipos} = useRequest('tiposequipos/');
-    const [seletedTipoEquipo, setSeletedTipoEquipo] = useState(1);
+    const [seletedTipoEquipo, setSeletedTipoEquipo] = useState("");
     const {data: marcas, get: getMarcas, post: postMarca, put: putMarca} = useRequest('marcas/');
     const [seletedMarca, setSeletedMarca] = useState(0);
     const {data: modelos, get: getModelos,put: putModelo} = useRequest('modelos/');
@@ -38,7 +38,7 @@ export function Marcas() {
     }, []);
 
     useEffect(() => {
-        getMarcas({tiposEquiposMarcas: tiposEquipos.selected});
+        if(seletedTipoEquipo) getMarcas({search: seletedTipoEquipo});
     }, [seletedTipoEquipo]);
 
     useEffect(() => {

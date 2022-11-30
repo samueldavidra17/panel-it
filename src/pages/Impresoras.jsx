@@ -7,7 +7,7 @@ import Modal, { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
 import Alerts, { useAlerts } from 'component/Alerts';
-// import { FormImpresoras, FormInformacion, FormAsignarUsuarios } from 'component/forms';
+import { FormImpresoras, FormInformacion } from 'component/forms';
 import { InputTexto } from 'component/inputs';
 // import InformacionImpresoras from 'component/InformacionImpresoras';
 import { useRequest } from 'utils/useRequest';
@@ -49,51 +49,43 @@ export function Impresoras() {
     }
     const { data: impresoras, get: getImpresoras, post: postImpresoras, put: putImpresoras } = useRequest("impresoras/");
     const { put: putInformacion } = useRequest("informacion/");
-    
-    // const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
-    //     try {
-    //         const res = await axios.patch(`impresoras/${id}/`, {usuarios});
-    //         if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
-    //         getImpresoras();
-    //         return { error: false, message: 'Se ha asignado el usuario al equipo' };
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
 
-    // const getModalContent = () => {
-    //     switch (modalState.content.toUpperCase()) {
-    //         case "AGREGAR":
-    //             return { 
-    //                 children: <FormImpresoras />,
-    //                 title: 'Agregar nuevo equipo', 
-    //                 confirn: ({equipo}) => postImpresoras(equipo)
-    //             }
-    //         case "ACTUALIZAR":
-    //             return { 
-    //                 children: <FormImpresoras id={id} />,
-    //                 title: 'Actualizar especificaciones del equipo', 
-    //                 confirn: ({equipo}) => putImpresoras(equipo, id)
-    //             }
-    //         case "ESTADO":
-    //             return { 
-    //                 children: <FormInformacion id={id} />,
-    //                 title: 'Actualizar estado del equipo', 
-    //                 confirn: ({informacion}) => putInformacion(informacion, id)
-    //             }
-    //         // case "ASIGNAR":
-    //         //     return { 
-    //         //         children: <FormAsignarUsuarios id={id} />,
-    //         //         title: 'Asignar usuario', 
-    //         //         confirn: patchUsuarioEquipo
-    //         //     }
-    //         // case "DETALLES":
-    //         //     return { 
-    //         //         children: <InformacionImpresoras id={id} />,
-    //         //         title: 'Información del equipo', 
-    //         //     }
-    //     }
-    // }
+    const getModalContent = () => {
+        switch (modalState.content.toUpperCase()) {
+            case "AGREGAR":
+                return { 
+                    children: <FormImpresoras />,
+                    title: 'Agregar nueva impresora', 
+                    confirn: ({impresora}) => {
+                        console.log(impresora)
+                        postImpresoras(impresora)
+                    }
+                }
+            case "ACTUALIZAR":
+                return { 
+                    children: <FormImpresoras id={id} />,
+                    title: 'Actualizar impresora', 
+                    confirn: ({impresora}) => putImpresoras(impresora, id)
+                }
+            case "ESTADO":
+                return { 
+                    children: <FormInformacion id={id} />,
+                    title: 'Actualizar estado de la impresora', 
+                    confirn: ({informacion}) => putInformacion(informacion, id)
+                }
+            // case "ASIGNAR":
+            //     return { 
+            //         children: <FormAsignarUsuarios id={id} />,
+            //         title: 'Asignar usuario', 
+            //         confirn: patchUsuarioEquipo
+            //     }
+            // case "DETALLES":
+            //     return { 
+            //         children: <InformacionImpresoras id={id} />,
+            //         title: 'Información del equipo', 
+            //     }
+        }
+    }
 
 
     useEffect(() => {
@@ -129,7 +121,7 @@ export function Impresoras() {
                     </Button>
                     <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
                 </Grid>
-                {/* <ProviderFormImpresoras>
+                <ProviderFormImpresoras>
                     <Modal
                         state={modalState}
                         {...getModalContent()}
@@ -137,7 +129,7 @@ export function Impresoras() {
                         context={contextFormImpresoras}
                     />
                     <Alerts state={alertState} />
-                </ProviderFormImpresoras> */}
+                </ProviderFormImpresoras>
                 <Grid item>
                     <InputTexto
                         label="Seach"

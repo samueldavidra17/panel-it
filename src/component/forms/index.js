@@ -1,4 +1,5 @@
 export * from './FormEquipos';
+export * from './FormImpresoras';
 export * from './FormInformacion';
 export * from './FormInformaciones';
 export * from './FormAsignarUsuario';
