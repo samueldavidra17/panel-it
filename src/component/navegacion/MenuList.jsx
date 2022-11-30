@@ -81,6 +81,12 @@ export default function MenuList() {
               </ListItemIcon>
               <ListItemText primary="Marcas" />
             </ListItemButton>
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/tiposequipos">
+              <ListItemIcon sx={{minWidth}}>
+                <BackupTableIcon />
+              </ListItemIcon>
+              <ListItemText primary="Tipos Equipos" />
+            </ListItemButton>
             <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/informacion">
               <ListItemIcon sx={{minWidth}}>
                 <BackupTableIcon />

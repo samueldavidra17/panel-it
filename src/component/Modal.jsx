@@ -8,7 +8,9 @@ import {
   Button,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { clearState } from 'reducer/reducerForm';
 
+//custom hook para funcionamiento de modal
 export const useModal = () => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState('');
@@ -23,19 +25,16 @@ export const useModal = () => {
   return { open, handleOpen, content, handleContent }
 }
 
-export default function Modal({ children, title, confirn, state: { open, handleOpen }, alert, context }) {
+export default function Modal({ children, title, confirn, open, handleOpen, context, content }) {
   const [state, dispatch] = useContext(context);
   
   const handleClose = () => {
-    dispatch({ type: "CLEAR_STATE" });
+    dispatch(clearState());
     handleOpen();
   }
 
   const handleConfirn = async () => {
-    const { error, message } = await confirn(state);
-    alert(error, message);
-    if (!error) 
-      handleClose();
+    if(await confirn(state)) handleClose()
   }
 
   return (
@@ -53,7 +52,7 @@ export default function Modal({ children, title, confirn, state: { open, handleO
       }}
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-        {title}
+        {content+" "+title}
         <IconButton
           aria-label="close"
           onClick={handleClose}

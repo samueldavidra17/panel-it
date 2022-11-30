@@ -2,13 +2,15 @@ import { useState } from 'react';
 import axios from 'utils/axioIntance';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Dispositivos, Equipos, Impresoras, Informacion, Login, Marcas, Organizaciones, Usuarios } from "pages";
+import { Dispositivos, Equipos, Impresoras, Informacion, Login, Marcas, Organizaciones, TiposEquipos, Usuarios } from "pages";
 import NavBar from "component/navegacion/NavBar";
+import { useModal } from 'component/Modal';
+import withModal from 'utils/withModal';
 
 const AppRoute = () => {
   const [sesion, setSesion] = useState({});
   const navigate = useNavigate();
-
+  
   const getSesion = async () => {
     try {
       const res = await axios.get('/equipos', {
@@ -27,11 +29,11 @@ const AppRoute = () => {
     <NavBar onContextMenu={(e) => console.log(e)}>
       <Routes>
         <Route exact path="equipos" element={<Equipos />} />
-        <Route exact path="login" element={<Login />} />
         <Route exact path="impresoras" element={<Impresoras />} />
         <Route exact path="dispositivos" element={<Dispositivos />} />
         <Route exact path="informacion" element={<Informacion />} />
         <Route exact path="marcas" element={<Marcas />} />
+        <Route exact path="tiposequipos" element={<TiposEquipos />} />
         <Route exact path="organizaciones" element={<Organizaciones />} />
         <Route exact path="usuarios" element={<Usuarios />} />
       </Routes>
