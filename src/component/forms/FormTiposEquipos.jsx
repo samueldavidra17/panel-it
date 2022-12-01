@@ -7,7 +7,9 @@ import { contextForm } from 'context/contextForm';
 import { changeProperty, setState } from 'reducer/reducerForm';
 import withModal from 'utils/withModal';
 
-function Form( { id }) {
+const choiseId = ['E','I','D'];
+
+function Form({ id }) {
 
     const [state, dispatch] = useContext(contextForm);
     
@@ -21,7 +23,8 @@ function Form( { id }) {
     }
 
     useEffect(() => {
-        if(id) getTipoEquipo();
+        if(id && !choiseId.includes(id)) getTipoEquipo();
+        else dispatch(setState({id}))
     }, [id]);
 
     return (

@@ -17,14 +17,13 @@ const menu = [
 const columns = [
     { id: 'nombre', label: 'Nombre' },
     { id: 'cargo', label: 'Cargo' },
-    { id: 'empresa', label: 'Empresa' },
-    { id: 'departamento', label: 'Departamento' },
+    { id: 'empresaNombre', label: 'Empresa' },
+    { id: 'departamentoNombre', label: 'Departamento' },
 ];
 
 export function Usuarios() {
 
     const modalState = useModal();
-    const alertState = useAlerts();
     const tablaState = useTabla();
     const menuState = useMenu();
 
@@ -72,18 +71,12 @@ export function Usuarios() {
                                 property="search"
                             />
                         </Grid>
-                        <ProviderFormUsuarios>
-                            <Modal
-                                state={modalState}
-                                title={`${modalState.content} usuario`}
-                                confirn={!id ? postUsuarios : (usuario) => putUsuarios(usuario, id)}
-                                alert={alertState.handleOpen}
-                                context={contextFormUsuarios}
-                            >
-                                <FormUsuarios id={modalState.content.toUpperCase() !== "AGREGAR" ? id : null} />
-                            </Modal>
-                            <Alerts state={alertState} />
-                        </ProviderFormUsuarios>
+                        <FormUsuarios 
+                            {...modalState}
+                            title="Usuario"
+                            id={id}
+                            confirn={!id ? postUsuarios : putUsuarios } 
+                        />
                     </Grid>
                 <Grid item sm={12}>
                     <Tabla

@@ -129,9 +129,7 @@ export function Otros() {
                     title={title}
                     id={edit ? selected : null}
                     uri={content}
-                    confirn={!edit
-                            ? postData
-                            : (value) => (putData(value, selected))} 
+                    confirn={!edit ? postData : putData} 
                 />
             </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-export const type = {
+const type = {
     SET_STATE: "SET_FORM",
     CHANGE_PROPERTY: "CHANGE_PROPERTY",
     CLEAR_STATE: "CLEAR_STATE"
@@ -14,8 +14,6 @@ export const reducerForm = (state, action) => {
             return { ...state, [action.payload.property]: action.payload.value };
         case type.CLEAR_STATE:
             return { ...initialState };
-        default:
-            return state;
     }
 }
 

@@ -2,20 +2,21 @@ import { useContext, useEffect, useState } from 'react';
 import axios from "utils/axioIntance";
 import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
-import { contextFormUsuarios } from 'context/contextFormUsuarios';
-import { changePropertyUsuario, setUsuario } from 'reducer/reducerUsuario';
+import { contextForm } from 'context/contextForm';
+import withModal from 'utils/withModal';
+import { changeProperty, setState } from 'reducer/reducerForm';
 
-export function FormUsuarios({ id }) {
-    const [usuario, dispatch] = useContext(contextFormUsuarios);
+function Form({ id }) {
+    const [state, dispatch] = useContext(contextForm);
 
     const changeUsuario = (property, value) => {
-        dispatch(changePropertyUsuario({ property, value }));
+        dispatch(changeProperty(property, value));
     }
 
     const getUsuario = async () => {
         try {
             const usuario = await axios.get(`usuarios/${id}/`);
-            dispatch(setUsuario(usuario.data));
+            dispatch(setState(usuario.data));
         } catch (error) {
             console.log(error);
         }
@@ -25,7 +26,7 @@ export function FormUsuarios({ id }) {
     const getOpciones = async () => {
         try {
             const empresas = await axios.get('empresas/');
-            setOpciones({empresas: empresas.data});
+            setOpciones({...opciones, empresas: empresas.data});
         } catch (error) {
             console.log(error);
         }
@@ -50,16 +51,14 @@ export function FormUsuarios({ id }) {
     }, []);
 
     useEffect(() => {
-        if(usuario.departamentoId){
-            opcionesDepartamentos(usuario.empresaId);
-        }
-    }, [usuario.departamentoId]);
+        if(state.departamento) opcionesDepartamentos(state.empresa)
+    }, [state.departamento]);
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
                 <InputSeleccionar
-                    input={usuario.empresaId ? usuario.empresaId : null}
+                    input={state.empresa}
                     label={"Empresas"}
                     opciones={opciones.empresas}
                     accion={(value) => {
@@ -70,23 +69,23 @@ export function FormUsuarios({ id }) {
             </Grid>
              <Grid item xs={12} sm={6}>
                 <InputSeleccionar
-                    input={usuario.departamentoId ? usuario.departamentoId : null}
+                    input={state.departamento}
                     label={"Departamentos"}
                     opciones={opciones.departamentos}
                     accion={(value) => changeUsuario('departamento', value)}
-                    desactivado={opciones.departamentos || usuario.departamentoId ? false : true}
+                    desactivado={!opciones.departamentos}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <InputTexto
-                    input={usuario.nombre ? usuario.nombre : null}
+                    input={state.nombre}
                     label={"Nombre y Apellido"}
                     accion={(value) => changeUsuario('nombre', value)}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <InputTexto
-                    input={usuario.cargo ? usuario.cargo : null}
+                    input={state.cargo}
                     label={"Cargo"}
                     accion={(value) => changeUsuario('cargo', value)}
                 />
@@ -94,3 +93,5 @@ export function FormUsuarios({ id }) {
         </Grid>
     );
 }
+
+export const FormUsuarios = withModal(Form);

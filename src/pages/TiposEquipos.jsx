@@ -103,10 +103,9 @@ export function TiposEquipos() {
             <FormTiposEquipos 
                 {...modalState}
                 title={tipo}
-                id={edit ? selected : null}
-                confirn={!edit 
-                            ? (value) => (postTiposEquipos({...value, id: tipo.charAt(0)})) 
-                            : (value) => (putTiposEquipos(value, selected))} />
+                id={edit ? selected : tipo.charAt(0)}
+                confirn={!edit ? postTiposEquipos : putTiposEquipos }
+            />
         </Grid>
     );
 }

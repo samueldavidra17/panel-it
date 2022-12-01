@@ -42,9 +42,9 @@ export function useRequest(uri){
         }
     }
 
-    const put = async (data, id) => {
+    const put = async (data) => {
         try {
-            const res = await axios.put(`${uri+id}/`, data);
+            const res = await axios.put(`${uri+data.id}/`, data);
             if(res.status !== 200) 
                 return { error: true, message: 'Ha ocurrido un error' };
             return { error: false, message: 'Se han actualizado los datos del equipo' };
