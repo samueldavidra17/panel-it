@@ -1,5 +1,5 @@
 export * from "./Equipos";
-export * from "./Informacion";
+export * from "./Otros";
 export * from "./Marcas";
 export * from "./Organizaciones";
 export * from "./Login";

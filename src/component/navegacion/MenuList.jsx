@@ -8,7 +8,8 @@ import MouseIcon from '@mui/icons-material/Mouse';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import DvrIcon from '@mui/icons-material/Dvr';
-import BackupTableIcon from '@mui/icons-material/BackupTable';
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
@@ -83,15 +84,15 @@ export default function MenuList() {
             </ListItemButton>
             <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/tiposequipos">
               <ListItemIcon sx={{minWidth}}>
-                <BackupTableIcon />
+                <DevicesOtherIcon />
               </ListItemIcon>
               <ListItemText primary="Tipos Equipos" />
             </ListItemButton>
-            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/informacion">
+            <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/otros">
               <ListItemIcon sx={{minWidth}}>
-                <BackupTableIcon />
+                <BorderColorIcon />
               </ListItemIcon>
-              <ListItemText primary="Información" />
+              <ListItemText primary="Otros" />
             </ListItemButton>
         </List>
       </Collapse>

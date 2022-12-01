@@ -14,7 +14,7 @@ import { Container } from "@mui/system";
 import Alerts, { useAlerts } from "component/Alerts";
 import { InputSeleccionar } from "component/inputs";
 import Modal, { useModal } from "component/Modal";
-import { FormInformaciones } from 'component/forms';
+import { FormOtros } from 'component/forms';
 import ProviderFormInformacion, { contextFormInformacion } from "context/contextInformacion";
 import { useRequest } from "utils/useRequest";
 
@@ -41,21 +41,21 @@ const opciones = [
     },
 ]
 
-export function Informacion() {
+export function Otros() {
     const [content, setContent] = useState("asignaciones");
     
     const [edit, setEdit] = useState(false);
     const [selected, setSelected] = useState(1);
 
     const modalState = useModal();
-    const alertState = useAlerts();
     
-    const { data: lista, get: getLista, post: postInfo, put: putInfo } = useRequest(content+'/'); 
+    const { data: lista, get: getLista, post: postData, put: putData } = useRequest(content+'/'); 
 
     useEffect(() => {
         getLista();
     }, [content]);
 
+    const title = opciones.find((i) => i.id === content).nombre;
     return (
         <Grid
             container
@@ -67,15 +67,18 @@ export function Informacion() {
                 <Button
                     variant="outlined"
                     sx={{ marginRight: 2 }}
-                    onClick={() => modalState.handleOpen()}
+                    onClick={(e) => {
+                        setEdit(false);
+                        modalState.handleContent(e);
+                    }}
                 >
                     Agregar
                 </Button>
                 <Button
                     variant="outlined"
-                    onClick={() => {
+                    onClick={(e) => {
                         setEdit(true);
-                        modalState.handleOpen();
+                        modalState.handleContent(e);
                     }}
                 >
                     Actualizar
@@ -92,7 +95,7 @@ export function Informacion() {
             <Grid item sm={12}>
                 <Paper >
                     <Container>
-                        <Typography variant="h4" sx={{ paddingY: 2 }}>{opciones.find((i) => i.id === content).nombre}</Typography>
+                        <Typography variant="h4" sx={{ paddingY: 2 }}>{title}</Typography>
                         <RadioGroup
                             value={selected}
                             onChange={({ target: { value }}) => setSelected(parseInt(value))}
@@ -121,18 +124,15 @@ export function Informacion() {
                         </RadioGroup>
                     </Container>
                 </Paper>
-                <ProviderFormInformacion>
-                    <Modal
-                        title={`${!edit ? "Agregar" : "Actualizar"} ${content}`}
-                        state={modalState}
-                        alert={alertState.handleOpen}
-                        context={contextFormInformacion}
-                        confirn={!edit ? (value) => postInfo({nombre: value}) : (value) => putInfo({nombre: value}, selected)}
-                    >
-                        <FormInformaciones id={edit ? selected : null} content={content} />
-                    </Modal>
-                </ProviderFormInformacion>
-                <Alerts state={alertState} />
+                <FormOtros 
+                    {...modalState}
+                    title={title}
+                    id={edit ? selected : null}
+                    uri={content}
+                    confirn={!edit
+                            ? postData
+                            : (value) => (putData(value, selected))} 
+                />
             </Grid>
         </Grid>
     );
