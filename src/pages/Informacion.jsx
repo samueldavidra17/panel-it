@@ -20,10 +20,6 @@ import { useRequest } from "utils/useRequest";
 
 const opciones = [
     {
-        id: "tiposequipos",
-        nombre: "Tipos Equipos"
-    },
-    {
         id: "asignaciones",
         nombre: "Asignaciones"
     },
@@ -46,7 +42,7 @@ const opciones = [
 ]
 
 export function Informacion() {
-    const [content, setContent] = useState("tiposequipos");
+    const [content, setContent] = useState("asignaciones");
     
     const [edit, setEdit] = useState(false);
     const [selected, setSelected] = useState(1);

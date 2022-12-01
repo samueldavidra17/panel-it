@@ -25,7 +25,7 @@ export const useModal = () => {
   return { open, handleOpen, content, handleContent }
 }
 
-export default function Modal({ children, title, confirn, open, handleOpen, context, content }) {
+export default function Modal({ children, title, confirn, open, handleOpen, context, content, alert }) {
   const [state, dispatch] = useContext(context);
   
   const handleClose = () => {
@@ -34,7 +34,9 @@ export default function Modal({ children, title, confirn, open, handleOpen, cont
   }
 
   const handleConfirn = async () => {
-    if(await confirn(state)) handleClose()
+    const {error, message} = await confirn(state);
+    alert(error, message);
+    if(!error) handleClose();
   }
 
   return (

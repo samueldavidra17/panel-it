@@ -11,9 +11,8 @@ import {
     RadioGroup, 
     Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import Alerts, { useAlerts } from "component/Alerts";
 import { InputSeleccionar } from "component/inputs";
-import Modal, { useModal } from "component/Modal";
+import { useModal } from "component/Modal";
 import { useRequest } from "utils/useRequest";
 import { FormTiposEquipos } from "component/forms/FormTiposEquipos";
 
@@ -24,9 +23,8 @@ export function TiposEquipos() {
     const [selected, setSelected] = useState("");
     
     const modalState = useModal();
-    const alertState = useAlerts();
     
-    const { data: tiposEquipos, get: getTiposEquipos, post: postInfo, put: putInfo } = useRequest("tiposequipos/"); 
+    const { data: tiposEquipos, get: getTiposEquipos, post: postTiposEquipos, put: putTiposEquipos } = useRequest("tiposequipos/"); 
 
     useEffect(() => {
         getTiposEquipos({search: tipo.charAt(0)});
@@ -38,18 +36,25 @@ export function TiposEquipos() {
             spacing={3}
             alignItems="center"
             justify="center"
+            id='message'
         >
             <Grid item sm={6}>
                 <Button
                     variant="outlined"
                     sx={{ marginRight: 2 }}
-                    onClick={modalState.handleContent}
+                    onClick={(e) => {
+                        setEdit(false);
+                        modalState.handleContent(e);
+                    }}
                 >
                     Agregar
                 </Button>
                 <Button
                     variant="outlined"
-                    onClick={modalState.handleContent}
+                    onClick={(e) => {
+                        setEdit(true);
+                        modalState.handleContent(e);
+                    }}
                 >
                     Actualizar
                 </Button>
@@ -68,7 +73,7 @@ export function TiposEquipos() {
                         <Typography variant="h4" sx={{ paddingY: 2 }}>{`Tipo de ${tipo}`}</Typography>
                         <RadioGroup
                             value={selected}
-                            onChange={({ target: { value }}) => setSelected(parseInt(value))}
+                            onChange={({ target: { value }}) => setSelected(value)}
                         >
                             <List>
                                 <Grid container>
@@ -98,7 +103,10 @@ export function TiposEquipos() {
             <FormTiposEquipos 
                 {...modalState}
                 title={tipo}
-                confirn={(value) => console.log(value)} />
+                id={edit ? selected : null}
+                confirn={!edit 
+                            ? (value) => (postTiposEquipos({...value, id: tipo.charAt(0)})) 
+                            : (value) => (putTiposEquipos(value, selected))} />
         </Grid>
     );
 }
