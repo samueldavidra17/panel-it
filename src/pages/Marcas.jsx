@@ -158,8 +158,8 @@ export function Marcas() {
             </Grid>
             <ProviderFormMarcas>
                 <Modal
-                    title={`${modalStateMarca.content} marca`}
-                    state={modalStateMarca}
+                    title={"marca"}
+                    {...modalStateMarca}
                     alert={alertState.handleOpen}
                     context={contextFormMarcas}
                     confirn={
@@ -184,7 +184,7 @@ export function Marcas() {
                     state={modalStateModelo}
                     alert={alertState.handleOpen}
                     context={contextFormModelos}
-                    confirn={(modelo) => putModelo(modelo, seletedModelo)}
+                    confirn={putModelo}
                 >
                     <FormModelos id={seletedModelo} />
                 </Modal>

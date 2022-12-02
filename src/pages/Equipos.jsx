@@ -129,7 +129,7 @@ export function Equipos() {
                 </Grid>
                 <ProviderFormEquipos>
                     <Modal
-                        state={modalState}
+                        {...modalState}
                         {...getModalContent()}
                         alert={alertState.handleOpen}
                         context={contextFormEquipos}

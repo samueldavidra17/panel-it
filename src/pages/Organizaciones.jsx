@@ -224,7 +224,7 @@ export function Organizaciones() {
             <ProviderFormEmpresasDepartamentos>
                     <Modal
                         {...getActionModal()}
-                        state={modalState}
+                        {...modalState}
                         alert={alertState.handleOpen}
                         context={contextFormEmpresasDepartamentos}
                     >

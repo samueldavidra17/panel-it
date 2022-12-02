@@ -24,7 +24,6 @@ const columns = [
 ];
 const menu = [
     "Actualizar",
-    "Estado",
     // "Asignar",
     // "Detalles"
 ];
