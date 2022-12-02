@@ -2,21 +2,18 @@ import { useContext, useEffect, useState } from 'react';
 import axios from "utils/axioIntance";
 import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
-import { contextFormImpresoras } from 'context/contextFormImpresoras';
-import { changePropertyImpresora, setImpresora } from 'reducer/reducerImpresora';
+import { contextForm } from 'context/contextForm';
+import { changeProperty, setState } from 'reducer/reducerForm';
+import withModal from 'utils/withModal';
 
-export function FormImpresoras({ id }) {
-  const [state, dispatch] = useContext(contextFormImpresoras);
-  const { impresora } = state;
-  const changeImpresora = (property, value) => {
-    dispatch(changePropertyImpresora({ property, value }));
-  }
+function Form({ id }) {
+  const [state, dispatch] = useContext(contextForm);
+  const changeImpresora = (property, value) => dispatch(changeProperty(property, value));
 
   const getImpresora = async () => {
     try {
       const impresora = await axios.get(`impresoras/${id}/`);
-      const res = {...impresora.data, modelosforeignkey: impresora.data.modelo_id, usuariosforeignkey: impresora.data.usuario.id}
-      dispatch(setImpresora(res));
+      dispatch(setState(impresora.data));
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +52,7 @@ export function FormImpresoras({ id }) {
     try {
       const modelos = await axios.get('modelos/', { 
         params: { 
-          tiposEquiposMarcas_id__marcas_id: impresora.marca_id,
+          tiposEquiposMarcas_id__marcas_id: state.marca_id,
         } 
       });
       setModelo(modelos.data);
@@ -73,16 +70,16 @@ export function FormImpresoras({ id }) {
   }, []);
 
   useEffect(() => {
-    if(impresora.marca_id){
+    if(state.marca_id){
       opcionesModelos();
     }
-  }, [impresora.marca_id]);
+  }, [state.marca_id]);
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={6} sm={6}>
         <InputSeleccionar
-          input={impresora ? impresora.marca_id : null}
+          input={state.marca_id}
           label={"Marca"}
           opciones={marcas}
           accion={(value) => changeImpresora('marca_id', value)} 
@@ -90,7 +87,7 @@ export function FormImpresoras({ id }) {
       </Grid>
       <Grid item xs={6} sm={6}>
         <InputSeleccionar
-          input={impresora ? impresora.modelo_id : null}
+          input={state.modelo_id}
           label={"Modelo"}
           opciones={modelo}
           accion={(value) => changeImpresora('modelos', value)}
@@ -99,7 +96,7 @@ export function FormImpresoras({ id }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputSeleccionar
-          input={impresora ? impresora.departamento_id : null}
+          input={state.departamento_id}
           label={"Departamento"}
           opciones={opciones.departamentos}
           accion={(value) => changeImpresora('departamento', value)}
@@ -107,7 +104,7 @@ export function FormImpresoras({ id }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputSeleccionar
-          input={impresora ? impresora.empresa_id : null}
+          input={state.empresa_id || "No aplica"}
           label={"Tipo conexión"}
           opciones={["No aplica", "Red", "Usb", "Compartida"]}
           accion={(value) => changeImpresora('tipo_conexion', value)}
@@ -115,28 +112,28 @@ export function FormImpresoras({ id }) {
       </Grid>
       <Grid item xs={12} sm={7}>
         <InputTexto
-          input={impresora ? impresora.serial : null}
+          input={state.serial}
           label={"Serial"}
           accion={(value) => changeImpresora('serial', value)}
         />
       </Grid>
       <Grid item xs={12} sm={5}>
         <InputTexto
-          input={impresora ? impresora.csb : null}
+          input={state.csb}
           label={"CSB"}
           accion={(value) => changeImpresora('csb', value)}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={impresora ? impresora.toner : null}
+          input={state.toner}
           label={"Toner"}
           accion={(value) => changeImpresora('toner', value)}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={impresora ? impresora.ip : null}
+          input={state.ip}
           label={"Ip"}
           accion={(value) => changeImpresora('ip', value)}
         />
@@ -144,3 +141,5 @@ export function FormImpresoras({ id }) {
     </Grid>
   );
 }
+
+export const FormImpresoras = withModal(Form);

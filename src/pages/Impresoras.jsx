@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'utils/axioIntance';
 import { Button, Grid } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ProviderFormImpresoras, { contextFormImpresoras } from 'context/contextFormImpresoras';
-import Modal, { useModal } from 'component/Modal';
+import { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
-import Alerts, { useAlerts } from 'component/Alerts';
 import { FormImpresoras, FormInformacion } from 'component/forms';
 import { InputTexto } from 'component/inputs';
-// import InformacionImpresoras from 'component/InformacionImpresoras';
 import { useRequest } from 'utils/useRequest';
 
 
@@ -38,7 +34,6 @@ export function Impresoras() {
     const tablaState = useTabla();
     const modalState = useModal();
     const menuState = useMenu();
-    const alertState = useAlerts();
 
     const id = tablaState.selected;
     
@@ -49,44 +44,6 @@ export function Impresoras() {
     }
     const { data: impresoras, get: getImpresoras, post: postImpresoras, put: putImpresoras } = useRequest("impresoras/");
     const { put: putInformacion } = useRequest("informacion/");
-
-    const getModalContent = () => {
-        switch (modalState.content.toUpperCase()) {
-            case "AGREGAR":
-                return { 
-                    children: <FormImpresoras />,
-                    title: 'Agregar nueva impresora', 
-                    confirn: ({impresora}) => {
-                        console.log(impresora)
-                        postImpresoras(impresora)
-                    }
-                }
-            case "ACTUALIZAR":
-                return { 
-                    children: <FormImpresoras id={id} />,
-                    title: 'Actualizar impresora', 
-                    confirn: ({impresora}) => putImpresoras(impresora, id)
-                }
-            case "ESTADO":
-                return { 
-                    children: <FormInformacion id={id} />,
-                    title: 'Actualizar estado de la impresora', 
-                    confirn: ({informacion}) => putInformacion(informacion, id)
-                }
-            // case "ASIGNAR":
-            //     return { 
-            //         children: <FormAsignarUsuarios id={id} />,
-            //         title: 'Asignar usuario', 
-            //         confirn: patchUsuarioEquipo
-            //     }
-            // case "DETALLES":
-            //     return { 
-            //         children: <InformacionImpresoras id={id} />,
-            //         title: 'Información del equipo', 
-            //     }
-        }
-    }
-
 
     useEffect(() => {
         getImpresoras();
@@ -121,15 +78,12 @@ export function Impresoras() {
                     </Button>
                     <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
                 </Grid>
-                <ProviderFormImpresoras>
-                    <Modal
-                        state={modalState}
-                        {...getModalContent()}
-                        alert={alertState.handleOpen}
-                        context={contextFormImpresoras}
-                    />
-                    <Alerts state={alertState} />
-                </ProviderFormImpresoras>
+                <FormImpresoras
+                    {...modalState}
+                    title={"Impresora"}
+                    id={id}
+                    confirn={!id ? postImpresoras : putImpresoras} 
+                />
                 <Grid item>
                     <InputTexto
                         label="Seach"

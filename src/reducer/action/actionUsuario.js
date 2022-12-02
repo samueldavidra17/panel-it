@@ -1,6 +1,0 @@
-export const typeUsuarios = {
-    SET_USUARIO: "SET_USUARIO",
-    CHANGE_PROPERTY_USUARIO: "CHANGE_PROPERTY_USUARIO",
-    CLEAR_STATE: "CLEAR_STATE"
-} 
-

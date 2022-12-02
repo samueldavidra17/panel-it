@@ -11,11 +11,9 @@ import {
     RadioGroup, 
     Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import Alerts, { useAlerts } from "component/Alerts";
 import { InputSeleccionar } from "component/inputs";
-import Modal, { useModal } from "component/Modal";
+import { useModal } from "component/Modal";
 import { FormOtros } from 'component/forms';
-import ProviderFormInformacion, { contextFormInformacion } from "context/contextInformacion";
 import { useRequest } from "utils/useRequest";
 
 const opciones = [
