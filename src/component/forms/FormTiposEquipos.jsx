@@ -8,11 +8,11 @@ import { changeProperty, setState } from 'reducer/reducerForm';
 import withModal from 'utils/withModal';
 
 const choiseId = ['E','I','D'];
-
+//componente formulario de tipos de equipos
 function Form({ id }) {
 
-    const [state, dispatch] = useContext(contextForm);
-    
+    const [state, dispatch] = useContext(contextForm); // --> contexto con el estado de los formularios
+    //peticion del tipo de equipo en caso de recibir un id 
     const getTipoEquipo = async () => {
         try {
             const tipoEquipo = await axios.get(`tiposequipos/${id}/`);
@@ -23,8 +23,12 @@ function Form({ id }) {
     }
 
     useEffect(() => {
-        if(id && !choiseId.includes(id)) getTipoEquipo();
-        else dispatch(setState({id}))
+        //si el id recibido es una letra se se setea el estado con el id para seleccionar
+        // el tipo de equipo a registrar (equipo, impresora o dispositivo)
+        if(id && !choiseId.includes(id)) 
+            getTipoEquipo();
+        else //en caso contrario se hace la peticion
+            dispatch(setState({id}))
     }, [id]);
 
     return (

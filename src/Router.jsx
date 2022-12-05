@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Dispositivos, Equipos, Impresoras, Otros, Login, Marcas, Organizaciones, TiposEquipos, Usuarios } from "pages";
 import NavBar from "component/navegacion/NavBar";
-import { useModal } from 'component/Modal';
-import withModal from 'utils/withModal';
-
+//rutas del renderizado de los componentes del panel
+//https://reactrouter.com/en/main --> doc de reac-router-dom para el manejo de las rutas
 const AppRoute = () => {
   const [sesion, setSesion] = useState({});
   const navigate = useNavigate();
-  
+  //peticion al back si se encuentra una sesion activa
   const getSesion = async () => {
     try {
       const res = await axios.get('/equipos', {
@@ -25,6 +24,7 @@ const AppRoute = () => {
   }
 
   getSesion();
+  //rutas de la parte administrativa del panel
   return (
     <NavBar onContextMenu={(e) => console.log(e)}>
       <Routes>
@@ -40,7 +40,8 @@ const AppRoute = () => {
     </NavBar>
   );
 }
-
+//componente enrutador principal del panel
+//si no hay una sesion carga el login 
 export default function Router() {
 
   return (

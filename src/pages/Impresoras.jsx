@@ -7,8 +7,8 @@ import MenuApp, { useMenu } from 'component/MenuApp';
 import { FormImpresoras, FormInformacion } from 'component/forms';
 import { InputTexto } from 'component/inputs';
 import { useRequest } from 'utils/useRequest';
-
-
+//columnas con su relacion de la propiedad en la tabla 
+//la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
     { id: 'tipo_impresora', label: 'Tipo Impresora' },
     { id: 'marca', label: 'Marca' },
@@ -22,25 +22,29 @@ const columns = [
     {id: 'toner', label: 'Toner' },
     {id: 'estatus', label: 'Estatus' },
 ];
+//opciones activas en el menu
 const menu = [
     "Actualizar",
     // "Asignar",
     // "Detalles"
 ];
-
+//componente de la pagina impresoras
 export function Impresoras() {
-
+    //llamado a los custom hooks para el uso de:
+    //la tabla, el modal y el menu
     const tablaState = useTabla();
     const modalState = useModal();
     const menuState = useMenu();
 
-    const id = tablaState.selected;
-    
+    const id = tablaState.selected; // --> id seleccionado en la tabla
+    //estado para el filtrado por busqueda
     const [search, setSearch] = useState('');
     const handlerSearch = (busqueda) => {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: impresoras, get: getImpresoras, post: postImpresoras, put: putImpresoras } = useRequest("impresoras/");
     const { put: putInformacion } = useRequest("informacion/");
 

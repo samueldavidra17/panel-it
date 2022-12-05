@@ -4,14 +4,13 @@ import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
 import { contextFormEquipos } from 'context/contextFormEquipos';
 import { changePropertyEquipo, setEquipo } from 'reducer/reducerEquipo';
-
+//componete formulario de los equipos
 export function FormEquipos({ id }) {
-  const [state, dispatch] = useContext(contextFormEquipos);
-  const { equipo } = state;
-  const changeEquipo = (property, value) => {
-    dispatch(changePropertyEquipo({ property, value }));
-  }
-
+  const [state, dispatch] = useContext(contextFormEquipos); // --> contexto con el estado del form de equipos
+  const { equipo } = state; // --> se estrae el equipo solamente
+  const changeEquipo = (property, value) => dispatch(changePropertyEquipo({ property, value }));
+  //peticion del equipo en caso de que se envie un id
+  //se modifica el json a recibir para poder realizar el envio adecuado
   const getEquipo = async () => {
     try {
       const equipo = await axios.get(`equipos/${id}/`);
@@ -21,14 +20,15 @@ export function FormEquipos({ id }) {
       console.log(error);
     }
   }
-
+  // estado de opciones de los combox de tipo de quipo, empresas, marcas, modelos
+  // y valores estandar (tipo de ram, sistemas operativos...)
   const [opciones, setOpciones] = useState({});
   const [marcas, setMarcas] = useState([]);
   const [modelo, setModelo] = useState([]);
 
   const getOpciones = async () => {
     try {
-      const equipos = await axios.get('tiposequipos/',{
+      const equipos = await axios.get('tiposequipos/',{ // --> filtro de tipos de equipos (solo equipos)
         params: {
           search: "E"
         }
@@ -44,6 +44,7 @@ export function FormEquipos({ id }) {
       console.log(error);
     }
   }
+  //peticion de marcas en base al tipo de equipo
   const opcionesMarcas = async () => {
     try {
       const marcas = await axios.get('marcas/', {
@@ -56,7 +57,7 @@ export function FormEquipos({ id }) {
       console.log(error);
     }
   }
-
+  //peticion de marcas en base a la marca
   const opcionesModelos = async () => {
     try {
       const modelos = await axios.get('modelos/', { 
@@ -71,20 +72,18 @@ export function FormEquipos({ id }) {
       console.log(error);
     }
   }
-
+  //peticion de opciones en los combox, si se encuentra un id se pide el dipositivo
   useEffect(() => {
     getOpciones();
-    if (id) {
+    if (id) 
       getEquipo();
-    }
   }, []);
-  
+  //peticion de las marcas al seleccionar un tipo de equipo
   useEffect(() => {
-    if(equipo.tipoEquipos_id){
+    if(equipo.tipoEquipos_id)
       opcionesMarcas();
-    }
   }, [equipo.tipoEquipos_id]);
-
+  //peticion de los modelos al seleccionar una marca
   useEffect(() => {
     if(equipo.marca_id){
       opcionesModelos();

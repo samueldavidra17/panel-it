@@ -20,12 +20,16 @@ import ProviderFormModelos, { contextFormModelos } from "context/contextFormMode
 import { FormMarcas, FormModelos } from "component/forms";
 import { InputSeleccionar } from "component/inputs";
 import { useRequest } from "utils/useRequest";
-
+//componente de la pagina marcas y modelos
 export function Marcas() {
+    //llamado a los custom hooks para el uso de:
+    //el modal (tanto para marcas como modelos) y alertas
     const modalStateMarca = useModal();
     const modalStateModelo = useModal();
     const alertState = useAlerts();
-
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas y estado del valor seleccionado de cada una
+    //(tanto para combox de tipos de equipos, marcas y modelos)
     const {data: tiposEquipos, get: getTiposEquipos} = useRequest('tiposequipos/');
     const [seletedTipoEquipo, setSeletedTipoEquipo] = useState("");
     const {data: marcas, get: getMarcas, post: postMarca, put: putMarca} = useRequest('marcas/');
@@ -36,11 +40,12 @@ export function Marcas() {
     useEffect(() => {
         getTiposEquipos();
     }, []);
-
+    //se piden las marcas en base a los tipos de equipos
     useEffect(() => {
-        if(seletedTipoEquipo) getMarcas({search: seletedTipoEquipo});
+        if(seletedTipoEquipo) 
+            getMarcas({search: seletedTipoEquipo});
     }, [seletedTipoEquipo]);
-
+    //se piden los modelos en base a las marcas y tipo de equipo
     useEffect(() => {
         if(seletedMarca > 0)
             getModelos({
@@ -48,7 +53,7 @@ export function Marcas() {
                 tiposEquiposMarcas_id__marcas_id: seletedMarca
             });
     }, [seletedMarca]);
-
+    // https://mui.com/material-ui/react-radio-button/ --> doc de componente RadioGroup
     return (
         <>
             <Grid
@@ -180,9 +185,8 @@ export function Marcas() {
             </ProviderFormMarcas>
             <ProviderFormModelos>
                 <Modal
-                    title={"Actualizar modelo"}
-                    state={modalStateModelo}
-                    alert={alertState.handleOpen}
+                    title={"modelo"}
+                    {...modalStateModelo}
                     context={contextFormModelos}
                     confirn={putModelo}
                 >

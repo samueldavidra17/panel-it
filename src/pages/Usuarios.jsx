@@ -7,30 +7,35 @@ import { useEffect } from "react";
 import { InputTexto } from "component/inputs";
 import { FormUsuarios } from "component/forms";
 import { useRequest } from "utils/useRequest";
-
+//opciones activas en el menu
 const menu = [
     "Actualizar"
 ]
+//columnas con su relacion de la propiedad en la tabla 
+//la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
     { id: 'nombre', label: 'Nombre' },
     { id: 'cargo', label: 'Cargo' },
     { id: 'empresaNombre', label: 'Empresa' },
     { id: 'departamentoNombre', label: 'Departamento' },
 ];
-
+//componente de la pagina usuarios
 export function Usuarios() {
-
+    //llamado a los custom hooks para el uso de:
+    //la tabla, el modal y el menu
     const modalState = useModal();
     const tablaState = useTabla();
     const menuState = useMenu();
 
-    const id = tablaState.selected;
-
+    const id = tablaState.selected; // --> id seleccionado en la tabla;
+    //estado para el filtrado por busqueda
     const [search, setSearch] = useState('');
     const handlerSearch = (busqueda) => {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: usuarios, getPaginations: getUsuarios, post: postUsuarios, put: putUsuarios } = useRequest("usuarios/");
 
     useEffect(() => {

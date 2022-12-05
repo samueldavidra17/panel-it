@@ -5,14 +5,12 @@ import { InputSeleccionar, InputTexto } from '../inputs';
 import { contextForm } from 'context/contextForm';
 import withModal from 'utils/withModal';
 import { changeProperty, setState } from 'reducer/reducerForm';
-
+//componente formulario de usuarios
 function Form({ id }) {
-    const [state, dispatch] = useContext(contextForm);
-
-    const changeUsuario = (property, value) => {
-        dispatch(changeProperty(property, value));
-    }
-
+    const [state, dispatch] = useContext(contextForm); // --> contexto del estado de los formularios
+    //funcion para cambiar una propiedad del estado en base a un parametro en el input
+    const changeUsuario = (property, value) => dispatch(changeProperty(property, value));
+    //peticion del usuario en caso de recibir un id
     const getUsuario = async () => {
         try {
             const usuario = await axios.get(`usuarios/${id}/`);
@@ -21,7 +19,8 @@ function Form({ id }) {
             console.log(error);
         }
     }
-
+    //estado de las opciones para los combox
+    //(departamentos y empresas)
     const [opciones, setOpciones] = useState({});
     const getOpciones = async () => {
         try {
@@ -31,10 +30,10 @@ function Form({ id }) {
             console.log(error);
         }
     }
-
+    
     const opcionesDepartamentos = async (value) => {
         try {
-            const departamentos = await axios.get('departamentos/', { 
+            const departamentos = await axios.get('departamentos/', { // --> filtro de los depatamentos en base a la empresa
                 params: { empresas: value } 
             });
             setOpciones({ ...opciones, departamentos: departamentos.data });
@@ -49,9 +48,10 @@ function Form({ id }) {
             getUsuario();
         }
     }, []);
-
+    //peticion de los departamentos al seleccionar una empresa
     useEffect(() => {
-        if(state.departamento) opcionesDepartamentos(state.empresa)
+        if(state.departamento) 
+            opcionesDepartamentos(state.empresa)
     }, [state.departamento]);
 
     return (

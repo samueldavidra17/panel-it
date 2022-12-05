@@ -15,15 +15,17 @@ import { InputSeleccionar } from "component/inputs";
 import { useModal } from "component/Modal";
 import { useRequest } from "utils/useRequest";
 import { FormTiposEquipos } from "component/forms/FormTiposEquipos";
-
+//componente de la pagina tipos de equipos
 export function TiposEquipos() {
-
+    //estado para saber que tipo de equipos manipular (acciones CRUD, dispositivos, impresoras, equipos)
+    //asi como si se va actualizar o no y el id del registro para ello
     const [tipo, setTipo] = useState("Equipos");
     const [edit, setEdit] = useState(false);
     const [selected, setSelected] = useState("");
     
-    const modalState = useModal();
-    
+    const modalState = useModal(); // llamado a custom hook para uso del modal
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: tiposEquipos, get: getTiposEquipos, post: postTiposEquipos, put: putTiposEquipos } = useRequest("tiposequipos/"); 
 
     useEffect(() => {
@@ -103,7 +105,10 @@ export function TiposEquipos() {
             <FormTiposEquipos 
                 {...modalState}
                 title={tipo}
-                id={edit ? selected : tipo.charAt(0)}
+                //si no se selecciona un registro 
+                //se pasa la primera letra del tipo de registro 
+                //para agregar uno nuevo (E, I, D) y generar uno nuevo
+                id={edit ? selected : tipo.charAt(0)} 
                 confirn={!edit ? postTiposEquipos : putTiposEquipos }
             />
         </Grid>

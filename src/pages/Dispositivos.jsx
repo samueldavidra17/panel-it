@@ -1,95 +1,48 @@
 import { useEffect, useState } from 'react';
-import axios from 'utils/axioIntance';
 import { Button, Grid } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ProviderFormDispositivos, { contextFormDispositivos } from 'context/contextFormDispositivos';
-import Modal, { useModal } from 'component/Modal';
+import { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
-import Alerts, { useAlerts } from 'component/Alerts';
-// import { FormDispositivos, FormInformacion, FormAsignarUsuarios } from 'component/forms';
 import { InputTexto } from 'component/inputs';
-// import InformacionDispositivos from 'component/InformacionDispositivos';
 import { useRequest } from 'utils/useRequest';
-
-
+import { FormDispositivos } from 'component/forms/FomDispositivos';
+//columnas con su relacion de la propiedad en la tabla 
+//la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
-    { id: 'tipo_equipo', label: 'Tipo Equipo' },
-    {id: 'marca', label: 'Marca' },
+    { id: 'tipo_dispositivo', label: 'Tipo Dispositivo' },
+    { id: 'marca', label: 'Marca' },
     { id: 'modelo', label: 'Modelo' },
     { id: 'serial', label: 'Serial' },
     { id: 'usuario', label: 'Usuario Asignado' },
     { id: 'departamento', label: 'Departamento' }
 ];
+//opciones activas en el menu
 const menu = [
     "Actualizar",
     "Estado",
     // "Asignar",
     // "Detalles"
 ];
-
+//componente de la pagina dispositivos
 export function Dispositivos() {
-
+    //llamado a los custom hooks para el uso de:
+    //la tabla, el modal y el menu
     const tablaState = useTabla();
     const modalState = useModal();
     const menuState = useMenu();
-    const alertState = useAlerts();
 
-    const id = tablaState.selected;
-    
+    const id = tablaState.selected; // --> id seleccionado en la tabla
+    //estado para el filtrado por busqueda
     const [search, setSearch] = useState('');
     const handlerSearch = (busqueda) => {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: dispositivos, get: getDispositivos, post: postDispositivos, put: putDispositivos } = useRequest("dispositivos/");
     const { put: putInformacion } = useRequest("informacion/");
-    
-    // const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
-    //     try {
-    //         const res = await axios.patch(`dispositivos/${id}/`, {usuarios});
-    //         if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
-    //         getDispositivos();
-    //         return { error: false, message: 'Se ha asignado el usuario al equipo' };
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // const getModalContent = () => {
-    //     switch (modalState.content.toUpperCase()) {
-    //         case "AGREGAR":
-    //             return { 
-    //                 children: <FormDispositivos />,
-    //                 title: 'Agregar nuevo equipo', 
-    //                 confirn: ({equipo}) => postDispositivos(equipo)
-    //             }
-    //         case "ACTUALIZAR":
-    //             return { 
-    //                 children: <FormDispositivos id={id} />,
-    //                 title: 'Actualizar especificaciones del equipo', 
-    //                 confirn: ({equipo}) => putDispositivos(equipo, id)
-    //             }
-    //         case "ESTADO":
-    //             return { 
-    //                 children: <FormInformacion id={id} />,
-    //                 title: 'Actualizar estado del equipo', 
-    //                 confirn: ({informacion}) => putInformacion(informacion, id)
-    //             }
-    //         // case "ASIGNAR":
-    //         //     return { 
-    //         //         children: <FormAsignarUsuarios id={id} />,
-    //         //         title: 'Asignar usuario', 
-    //         //         confirn: patchUsuarioEquipo
-    //         //     }
-    //         // case "DETALLES":
-    //         //     return { 
-    //         //         children: <InformacionDispositivos id={id} />,
-    //         //         title: 'Información del equipo', 
-    //         //     }
-    //     }
-    // }
-
 
     useEffect(() => {
         getDispositivos();
@@ -116,7 +69,7 @@ export function Dispositivos() {
                 <Grid item>
                     <Button
                         variant="outlined"
-                        disabled={!id ? true : false}
+                        disabled={!id ? true : false} // si no hay seleccionado no se activa la funcion actualizar
                         endIcon={<KeyboardArrowDownIcon />}
                         onClick={menuState.handleAnchorEl}
                     >
@@ -124,15 +77,12 @@ export function Dispositivos() {
                     </Button>
                     <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
                 </Grid>
-                {/* <ProviderFormDispositivos>
-                    <Modal
-                        state={modalState}
-                        {...getModalContent()}
-                        alert={alertState.handleOpen}
-                        context={contextFormDispositivos}
-                    />
-                    <Alerts state={alertState} />
-                </ProviderFormDispositivos> */}
+                <FormDispositivos 
+                    {...modalState}
+                    title={"Dispositivo"}
+                    id={id}
+                    confirn={!id ? postDispositivos : putDispositivos }
+                />
                 <Grid item>
                     <InputTexto
                         label="Seach"

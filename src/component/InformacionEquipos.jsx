@@ -5,7 +5,7 @@ import axios from 'utils/axioIntance';
 import { contextFormEquipos } from 'context/contextFormEquipos';
 import { useContext, useEffect } from 'react';
 import { setEquipo, setInformacion } from 'reducer/reducerEquipo';
-
+//componente de informacion detallada del equipo seleccionado
 export default function InformacionEquipos({ id }) {
     const [state, dispatch] = useContext(contextFormEquipos);
     const { equipo, informacion } = state;

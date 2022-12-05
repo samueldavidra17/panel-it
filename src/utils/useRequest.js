@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from './axioIntance';
+//Custom hook para las peticiones mas usadas a la api (get, post, put y paginacion)
+//https://es.reactjs.org/docs/hooks-custom.html --> doc de react sobre los custom hooks
 
+//Todas las peticiones de envio y recibiento de datos devuelven un mensaje de respuesta
+//dependiendo del estado de la misma (normalmente usada para la notificaciones)
 export function useRequest(uri){
+    //estado con la informacion pedida y si esta cargada o no (futura mejora)
     const [data, setData] = useState([]);
     const [load, setLoad] = useState(false);
 
     const set = (value) => setData(value);
-    
+    //peticion get que si recibe parametros de busqueda los genera
     const get = async (params = null) => {
         try {
             const res = await axios.get(uri, params ? { params } : null);
@@ -15,6 +20,8 @@ export function useRequest(uri){
             console.log(error);
         }
     }
+    //peticion get con paginacion
+    //recibe el estado de la pagina
     const getPaginations = async (pagination, search = null) => {
         try {
             const res = await axios.get(uri, {

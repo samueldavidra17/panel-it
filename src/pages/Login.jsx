@@ -9,10 +9,11 @@ import Container from '@mui/material/Container';
 import { Paper } from '@mui/material';
 import axios from 'utils/axioIntance';
 import { useNavigate } from 'react-router-dom';
-
+//componente login para el inicio de sesion
 export function Login() {
     const navigate = useNavigate();
-
+    //peticion de de inicio de sesion en el servidor 
+    //el token de respuesta se almacena en un sesion storage
     const login = async (body) => {
         try {
             const res = await axios.post('login/', body, {
@@ -25,6 +26,7 @@ export function Login() {
             console.log(error);
         }
     }
+  //recuperacion de los datos del formulario al dar click en el boton de envio (submit)
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -73,7 +75,7 @@ export function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Iniciar sessión
+              Iniciar sesión
             </Button>
           </Box>
         </Box>

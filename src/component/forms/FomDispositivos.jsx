@@ -5,11 +5,12 @@ import { InputSeleccionar, InputTexto } from '../inputs';
 import { contextForm } from 'context/contextForm';
 import { changeProperty, setState } from 'reducer/reducerForm';
 import withModal from 'utils/withModal';
-
+//componete formulario de los dispositivos
 function Form({ id }) {
-    const [state, dispatch] = useContext(contextForm);
-    const changeDispositivo = (property, value) => dispatch(changeProperty(property, value));
-
+    const [state, dispatch] = useContext(contextForm); // --> contexto con el estado de los formularios
+    //funcion para cambiar un valor del estado del dispositivo
+    const changeDispositivo = (property, value) => dispatch(changeProperty(property, value)); 
+    //peticion al api para la peticion de un dispositivo
     const getDispositivo = async () => {
         try {
             const dispositivo = await axios.get(`dispositivos/${id}/`);
@@ -19,14 +20,14 @@ function Form({ id }) {
         }
     }
 
-    const [opciones, setOpciones] = useState({});
-    const [marcas, setMarcas] = useState([]);
-    const [modelo, setModelo] = useState([]);
+    const [opciones, setOpciones] = useState({}); // --> estado de las opciones de los comboxBox de tipos equipos y departamentos
+    const [marcas, setMarcas] = useState([]); // --> estado de las opciones del comboxBox de marcas
+    const [modelo, setModelo] = useState([]); // --> estado de las opciones del comboxBox de modelo
 
     const getOpciones = async () => {
         try {
             const departamentos = await axios.get('departamentos/');
-            const tipos = await axios.get('tiposequipos/', {
+            const tipos = await axios.get('tiposequipos/', { //--> peticion de los tipos equipos filtrando solo los dispositivos
                 params: {
                     search: "D"
                 }
@@ -41,7 +42,8 @@ function Form({ id }) {
     }
     const opcionesMarcas = async (value) => {
         try {
-            const marcas = await axios.get('marcas/', {
+            //--> peticion de las marcas filtrando solo los dispositivos y su tipo
+            const marcas = await axios.get('marcas/', { 
                 params: {
                     tiposEquiposMarcas: value
                 }
@@ -54,6 +56,7 @@ function Form({ id }) {
 
     const opcionesModelos = async (value) => {
         try {
+            //--> peticion de los modelos filtrando solo los dispositivos por su marca
             const modelos = await axios.get('modelos/', {
                 params: {
                     tiposEquiposMarcas_id__marcas_id: value
@@ -64,24 +67,21 @@ function Form({ id }) {
             console.log(error);
         }
     }
-
+    //ejecucion de opciones en los combox, si se encuentra un id se pide el dipositivo
     useEffect(() => {
         getOpciones();
-        if (id) {
+        if (id) 
             getDispositivo();
-        }
     }, []);
-
+    //ejecicion de las marcas al seleccionar un tipo de equipo
     useEffect(() => {
-        if (state.tipo_dispositivo_id) {
+        if (state.tipo_dispositivo_id) 
             opcionesMarcas(state.tipo_dispositivo_id);
-        }
     }, [state.tipo_dispositivo_id]);
-
+    //ejecicion de las marcas al seleccionar una marca
     useEffect(() => {
-        if (state.marca_id) {
+        if (state.marca_id) 
             opcionesModelos(state.marca_id);
-        }
     }, [state.marca_id]);
 
     return (
@@ -129,5 +129,5 @@ function Form({ id }) {
         </Grid>
     );
 }
-
+//se usa el HOC de withModal para el renderizado del componente dentro de un modal y su logica
 export const FormDispositivos = withModal(Form);

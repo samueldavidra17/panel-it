@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Box, Drawer, AppBar, CssBaseline, Toolbar, Typography, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'
 import MenuList from './MenuList';
-
+//componente navbar con la navegacion del panel
+//https://mui.com/material-ui/react-app-bar/ --> doc de los componentes app bar
 export default function NavBar({ children }) {
     const drawerWidth = 210;
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false); // -->estado para abrir y cerrar el menu en dispositivos mobiles
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
+    const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
     return (
         <Box sx={{ display: 'flex' }} onContextMenu={(e) =>   e.preventDefault()}>
@@ -30,12 +29,13 @@ export default function NavBar({ children }) {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            {/* se muestra en dispositivos mobiles */}
             <Drawer
                 variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
+                    keepMounted: true, 
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'none' },
@@ -46,9 +46,11 @@ export default function NavBar({ children }) {
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
+                    {/* renderizado del componente menu con las opciones de navegacion */}
                     <MenuList />
                 </Box>
             </Drawer>
+            {/* se muestra en computadoras */}
             <Drawer
                 variant="permanent"
                 sx={{
@@ -60,11 +62,13 @@ export default function NavBar({ children }) {
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
+                    {/* renderizado del componente menu con las opciones de navegacion */}
                     <MenuList />
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
+                {/*paginas renderizadas dentro del navbar*/}
                 {children}
             </Box>
         </Box>

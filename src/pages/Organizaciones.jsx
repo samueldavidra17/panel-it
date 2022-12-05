@@ -19,22 +19,23 @@ import ProviderFormEmpresasDepartamentos, { contextFormEmpresasDepartamentos } f
 import { FormEmpresasDepartamentos } from "component/forms";
 import { InputSeleccionar } from "component/inputs";
 import { useRequest } from "utils/useRequest";
-
+//componente de la pagina de organizaciones (departamentos y empresas)
 export function Organizaciones() {
-
+    //llamado a los custom hooks para el uso de:
+    //el modal y las alertas
     const modalState = useModal();
     const alertState = useAlerts();
 
-    const [selected, setSelected] = useState(1);
+    const [selected, setSelected] = useState(1); // --> estado del id seleccionado (tanto empresas como departamentos)
 
-    const handleChange = (event) => {
-        setSelected(parseInt(event.target.value));
-    };
-
+    const handleChange = (event) => setSelected(parseInt(event.target.value));
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas (tanto empresas como departamentos)
     const { data: empresas, set: setEmpresas, get: getEmpresas, post: postEmpresa, put: putEmpresa } = useRequest("empresas/");
     const { data: departamentos, set: setDepartamentos, get: getDepartamentos, post: postDepartamento, put: putDepartamento } = useRequest("departamentos/");
-    
+    //funcion para actualizar las relaciones entre departamentos y empreas
     const handleSelected = (id) => {
+        //filtra en el arreglo con los id respectivos de cada organizacion
         const { organizacion, setOrganizaciones } = 
                 content.toUpperCase() === 'EMPRESAS' 
                 ? {organizacion: empresas, setOrganizaciones: setEmpresas} 
@@ -43,24 +44,26 @@ export function Organizaciones() {
         const value = organizacion.find((i) => i.id === selected);
         const indexValue = organizacion.indexOf(value);
         const keys = Object.keys(value);
+        //si se encuentra se remueve el id del arreglo
         if(value[keys[2]].includes(id)){
             const indexReplace = value[keys[2]].indexOf(id);
             value[keys[2]].splice(indexReplace, 1)
         }else{
+        // si no se encuentra se agrega el id
             value[keys[2]].push(id);
         }
         organizacion.splice(indexValue, 1, value);
-        setOrganizaciones([...organizacion]);
+        setOrganizaciones([...organizacion]); // por ultimo se renueva el renderizado del estado
     }
-
+    //estado para saber si se manipulan las empresas o los departamentos
     const [content, setContent] = useState("");
     const handleContent = (value) => {
         setContent(value)
         modalState.handleOpen();
     }
-
+    //estado para saber si se va a actualilzar o agregar
     const [edit, setEdit] = useState(false);
-
+    //funcion para devolver formulario para empresas o departamentos
     const getActionModal = () => {
         switch(content.toUpperCase()){
             case "EMPRESAS":
@@ -106,6 +109,7 @@ export function Organizaciones() {
                         edit 
                             ? <Button 
                                 variant="outlined"
+                                //funcion para actualizar relacion entre empresas
                                 onClick={async () => {
                                     const { error , message } = 
                                     content.toUpperCase() === "EMPRESAS" 

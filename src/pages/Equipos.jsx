@@ -11,8 +11,8 @@ import { FormEquipos, FormInformacion, FormAsignarUsuarios } from 'component/for
 import { InputTexto } from 'component/inputs';
 import InformacionEquipos from 'component/InformacionEquipos';
 import { useRequest } from 'utils/useRequest';
-
-
+//columnas con su relacion de la propiedad en la tabla 
+//la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
     { id: 'usuario_so', label: 'Nombre Equipo' },
     { id: 'usuario', label: 'Usuario Responsable' },
@@ -24,30 +24,34 @@ const columns = [
     { id: 'modelo', label: 'Modelo' },
     {id: 'marca', label: 'Marca' }
 ];
+//opciones activas en el menu
 const menu = [
     "Actualizar",
     "Estado",
     "Asignar",
     "Detalles"
 ];
-
+//componente de la pagina equipos
 export function Equipos() {
-
+    //llamado a los custom hooks para el uso de:
+    //la tabla, el modal y el menu
     const tablaState = useTabla();
     const modalState = useModal();
     const menuState = useMenu();
     const alertState = useAlerts();
 
-    const id = tablaState.selected;
-    
+    const id = tablaState.selected; // --> id seleccionado en la tabla
+    //estado para el filtrado por busqueda
     const [search, setSearch] = useState('');
     const handlerSearch = (busqueda) => {
         tablaState.handleSelected(id)
         setSearch(busqueda);
     }
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: equipos, getPaginations: getEquipos, post: postEquipos, put: putEquipos } = useRequest("equipos/");
     const { put: putInformacion } = useRequest("informacion/");
-    
+    //peticion patch para la asignacion de un usuario
     const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
         try {
             const res = await axios.patch(`equipos/${id}/`, {usuarios});
@@ -58,7 +62,8 @@ export function Equipos() {
             console.log(error);
         }
     }
-
+    //funcion que devuelve un formulario dependiendo de la accion
+    //hecha en los botones de la pagina
     const getModalContent = () => {
         switch (modalState.content.toUpperCase()) {
             case "AGREGAR":
@@ -149,7 +154,6 @@ export function Equipos() {
                         rows={equipos}
                         state={tablaState}
                         menu={menuState.handleAnchorEl}
-                        history={true}
                     />
                 </Grid>
             </Grid>

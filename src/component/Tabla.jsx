@@ -17,27 +17,25 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Box } from '@mui/system';
 import axios from "utils/axioIntance"
 
+//Custom hook para la manipulacion del estado de las tabla en las paginas que hacen uso de una,
+//con el estado de la paginacion y la seleccion de una fila.
+//https://es.reactjs.org/docs/hooks-custom.html --> doc de react para crear custom hooks
 export const useTabla = () => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [count, setCount] = useState(0);
-    const [selected, setSelected] = useState(null);
+    const [page, setPage] = useState(0); // --> pagina de la tabla
+    const [rowsPerPage, setRowsPerPage] = useState(10); // --> cantidad de registros en una pagina
+    const [count, setCount] = useState(0); // --> cantidad total de registros
+    const [selected, setSelected] = useState(null); // --> id de la fila seleccionada
 
-    const handleCount = (lenght) => {
-        setCount(lenght);
-    }
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    const handleCount = (lenght) => setCount(lenght);
+    
+    const handleChangePage = (event, newPage) => setPage(newPage);
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
-    const handleSelected = (id) => {
-        setSelected(selected != id ? id : null);
-    };
+    const handleSelected = (id) => setSelected(selected != id ? id : null);
 
     const clear = () => {
         setPage(0);
@@ -56,6 +54,9 @@ export const useTabla = () => {
         clear
     }
 }
+
+//componente fila de las tablas, puede tener la capacidad de generar una tabla history
+//https://mui.com/material-ui/react-table/#collapsible-table --> collapsive table
 const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
 
     const [open, setOpen] = useState(false);
@@ -64,13 +65,12 @@ const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
     const getHistory = async (id) => {
         try {
             const history = await axios.get(`historialequipos/${id}/`);
-            // console.log(history.data)
             setHistoryList(history.data.historial);
         } catch (error) {
             console.log(error);
         }
     }
-    // console.log(historyList.data);
+
     return (
         <>
             <TableRow hover role="checkbox" tabIndex={-1} key={row.id}
@@ -124,7 +124,7 @@ const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
                                     <Table size="small" aria-label="purchases">
                                         <TableHead>
                                             <TableRow>
-                                                {/* aqui va los head */}
+                                                {/* aqui van los headers */}
                                                 <TableCell>Fecha</TableCell>
                                                 <TableCell>Usuario</TableCell>
                                                 <TableCell>Cargo</TableCell>
@@ -156,6 +156,8 @@ const Row = ({ columns, row, selected, handleSelected, menu, history }) => {
     );
 }
 
+//componente tabla con la capacidad de generar sus columnas y filas a partir de un json
+//https://mui.com/material-ui/react-table/#sticky-header --> sticky hearders table
 export default function Tabla({ columns, rows, state, menu, history }) {
 
     const { selected, handleSelected } = state;

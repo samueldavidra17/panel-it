@@ -4,14 +4,16 @@ import { contextFormEquipos } from 'context/contextFormEquipos';
 import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
 import { changePropertyInformacion, setInformacion } from 'reducer/reducerEquipo';
-
+//componente formulario para el cambio de estado de informacion de los equipos
+//(estatus, asignacion, ubicacion y observaciones)
 export function FormInformacion({ id }) {
-  const [state, dispatch] = useContext(contextFormEquipos);
-  const { informacion } = state;
-  const changeInformacion = (property, value) => {
-    dispatch(changePropertyInformacion({ property, value }));
-  }
-  
+  const [state, dispatch] = useContext(contextFormEquipos); // --> contexto con el estado del equipo del form
+  const { informacion } = state; // --> se extrae la informacion nada mas
+
+  //funcion para cambiar una propiedad del json en el reducer del contexto en base a una propiedad dada en el input
+  const changeInformacion = (property, value) => dispatch(changePropertyInformacion({ property, value }));
+
+  //peticion para traer la informacion de un equipo/impresora en caso de enviar id
   const getInformacion= async () => {
     try {
       const informacion = await axios.get(`informacion/${id}/`);
@@ -21,7 +23,7 @@ export function FormInformacion({ id }) {
       console.log(error);
     }
   }
-
+  //estado para las opciones de los combox 
   const [opciones, setOpciones] = useState({});
   
   const getOpciones = async () => {

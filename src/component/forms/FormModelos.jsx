@@ -5,10 +5,10 @@ import { contextFormModelos } from "context/contextFormModelos";
 import { useContext } from "react";
 import { changePropertyModelo, setModelo } from "reducer/reducerModelo";
 import { useEffect } from "react";
-
+//componente formulario de modelos
 export function FormModelos({ id }){
-    const [state, dispatch] = useContext(contextFormModelos);
-
+    const [state, dispatch] = useContext(contextFormModelos); //--> contexto del formulario de modelos
+    //peticion del modelo en base a un id recibido
     const getModelo = async () =>{
         try {
             const modelo = await axios.get(`modelos/${id}/`);

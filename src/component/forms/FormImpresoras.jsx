@@ -5,11 +5,11 @@ import { InputSeleccionar, InputTexto } from '../inputs';
 import { contextForm } from 'context/contextForm';
 import { changeProperty, setState } from 'reducer/reducerForm';
 import withModal from 'utils/withModal';
-
+//componete formulario de las impresoras
 function Form({ id }) {
-  const [state, dispatch] = useContext(contextForm);
+  const [state, dispatch] = useContext(contextForm); // --> contexto con el estado de los formularios
   const changeImpresora = (property, value) => dispatch(changeProperty(property, value));
-
+  //peticion de la impresora si se envia un id
   const getImpresora = async () => {
     try {
       const impresora = await axios.get(`impresoras/${id}/`);
@@ -18,17 +18,15 @@ function Form({ id }) {
       console.log(error);
     }
   }
-
+  // estado de opciones de los combox de tipo de impresora, departamentos, marcas, modelos
   const [opciones, setOpciones] = useState({});
   const [marcas, setMarcas] = useState([]);
   const [modelo, setModelo] = useState([]);
 
   const getOpciones = async () => {
     try {
-      const departamentos = await axios.get('departamentos/');
-      const combox = await axios.get('combox/');
+      const departamentos = await axios.get('departamentos/'); 
       setOpciones({
-        ...combox.data,
         departamentos: departamentos.data
       });
     } catch (error) {
@@ -37,7 +35,7 @@ function Form({ id }) {
   }
   const opcionesMarcas = async () => {
     try {
-      const marcas = await axios.get('marcas/', {
+      const marcas = await axios.get('marcas/', { // --> filtro de marcas (solo impresoras)
         params: {
           search: "I"
         }
@@ -47,7 +45,7 @@ function Form({ id }) {
       console.log(error);
     }
   }
-
+//peticion de marcas en base a la marca
   const opcionesModelos = async () => {
     try {
       const modelos = await axios.get('modelos/', { 
@@ -64,15 +62,13 @@ function Form({ id }) {
   useEffect(() => {
     getOpciones();
     opcionesMarcas();
-    if (id) {
+    if (id) 
       getImpresora();
-    }
   }, []);
-
+//peticion de los modelos al seleccionar una marca
   useEffect(() => {
-    if(state.marca_id){
+    if(state.marca_id)
       opcionesModelos();
-    }
   }, [state.marca_id]);
 
   return (

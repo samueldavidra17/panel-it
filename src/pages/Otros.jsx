@@ -16,6 +16,9 @@ import { useModal } from "component/Modal";
 import { FormOtros } from 'component/forms';
 import { useRequest } from "utils/useRequest";
 
+//opciones para el combox de tipo de registro a manipular (acciones CRUD)
+//nombre: valor a mostrar combo,
+//id: direccion url en el back
 const opciones = [
     {
         id: "asignaciones",
@@ -38,22 +41,24 @@ const opciones = [
         nombre: "Ubicaciones"
     },
 ]
-
+//componente de la pagina de otros 
 export function Otros() {
+    //valor seleccionado en el combox
     const [content, setContent] = useState("asignaciones");
-    
+    //estado para actualizar o no en el formulario y el id del valor a actualizar
     const [edit, setEdit] = useState(false);
     const [selected, setSelected] = useState(1);
 
-    const modalState = useModal();
-    
+    const modalState = useModal(); // llamado a custom hook para uso del modal
+    //llamado al custom hook para la peticiones en la pagina
+    //se renombra las propiedades obtenidas
     const { data: lista, get: getLista, post: postData, put: putData } = useRequest(content+'/'); 
 
     useEffect(() => {
         getLista();
     }, [content]);
 
-    const title = opciones.find((i) => i.id === content).nombre;
+    const title = opciones.find((i) => i.id === content).nombre; // se selecciona el nombre del tipo de registro a editar (titulo modal)
     return (
         <Grid
             container

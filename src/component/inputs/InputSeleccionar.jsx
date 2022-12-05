@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
-
+//componente input de seleccion
+//https://mui.com/material-ui/react-select/ --> doc componente select
 export function InputSeleccionar({ input, label, opciones, accion, desactivado }) {
-  const [value, setValue] = useState('');
-  const [valid, setValid] = useState(true);
+  const [value, setValue] = useState(''); // --> valor seleccionado
+  const [valid, setValid] = useState(true); // --> muestra un error o no en el input 
 
+  //se recibe por las props una funcion para alterar el valor de un estado,
+  // esta funcion valida y cambia ese valor del mimso 
   const handlerOnChange = ({target: {value}}) => {
     setValid(value === 0 ? false : true);
     setValue(value);
-    accion(value);
+    accion(value); 
   }
 
   useEffect(() => {
@@ -28,6 +31,7 @@ export function InputSeleccionar({ input, label, opciones, accion, desactivado }
         disabled={desactivado ? true : false} 
       >
         {
+          /*recibe las opciones a renderizar y por defecto selecciona el valor del id o el mismo nombre*/
           opciones ?
           opciones.map((i) => <MenuItem key={i.id ? i.id : i} value={i.id ? i.id : i}>{i.nombre ? i.nombre : i}</MenuItem>)
           :

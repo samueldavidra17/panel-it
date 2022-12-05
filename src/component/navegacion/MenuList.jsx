@@ -12,10 +12,11 @@ import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
+//https://mui.com/material-ui/material-icons/ --> doc de los componentes iconos
 const minWidth = 40;
 const paddingLeft = 4;
-
+//componente menu con la lista de las paginas del panel
+//https://mui.com/material-ui/react-list/#nested-list --> doc del componente lista
 export default function MenuList() {
   const [open, setOpen] = useState(false);
 
@@ -29,7 +30,10 @@ export default function MenuList() {
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
+      {/* item de la lista renderizado como un componente link de la libreria reac-router 
+      https://reactrouter.com/en/main/components/link --> doc del componente link de reac-router*/}
         <ListItemButton component={Link} to="/equipos">
+        {/* https://mui.com/material-ui/api/list-item-icon/ --> doc api LinkItemButton*/}
           <ListItemIcon sx={{minWidth}}>
             <PersonalVideoIcon />
           </ListItemIcon>
