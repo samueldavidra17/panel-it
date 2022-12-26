@@ -13,20 +13,16 @@ import {
     Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import Modal, { useModal } from "component/Modal";
-import Alerts, { useAlerts } from "component/Alerts";
-import ProviderFormMarcas, { contextFormMarcas } from "context/contextFormMarca";
-import ProviderFormModelos, { contextFormModelos } from "context/contextFormModelos";
+import { useModal } from "component/Modal";
 import { FormMarcas, FormModelos } from "component/forms";
 import { InputSeleccionar } from "component/inputs";
 import { useRequest } from "utils/useRequest";
 //componente de la pagina marcas y modelos
 export function Marcas() {
     //llamado a los custom hooks para el uso de:
-    //el modal (tanto para marcas como modelos) y alertas
+    //el modal (tanto para marcas como modelos)
     const modalStateMarca = useModal();
     const modalStateModelo = useModal();
-    const alertState = useAlerts();
     //llamado al custom hook para la peticiones en la pagina
     //se renombra las propiedades obtenidas y estado del valor seleccionado de cada una
     //(tanto para combox de tipos de equipos, marcas y modelos)
@@ -161,39 +157,27 @@ export function Marcas() {
                     </Paper>
                 </Grid>
             </Grid>
-            <ProviderFormMarcas>
-                <Modal
-                    title={"marca"}
-                    {...modalStateMarca}
-                    alert={alertState.handleOpen}
-                    context={contextFormMarcas}
-                    confirn={
-                        modalStateMarca.content.toUpperCase() === "AGREGAR" 
-                            ? (marca) => postMarca(marca)
-                            : (marca) => putMarca(marca, seletedMarca)
-                    }
-                >
-                    <FormMarcas 
-                        tipoEquipos={seletedTipoEquipo}
-                        id={
-                            modalStateMarca.content.toUpperCase() !== "AGREGAR" 
-                                ? seletedMarca
-                                : null
-                        } 
-                    />
-                </Modal>
-            </ProviderFormMarcas>
-            <ProviderFormModelos>
-                <Modal
-                    title={"modelo"}
-                    {...modalStateModelo}
-                    context={contextFormModelos}
-                    confirn={putModelo}
-                >
-                    <FormModelos id={seletedModelo} />
-                </Modal>
-            </ProviderFormModelos>
-            <Alerts state={alertState} />
+            <FormMarcas
+                {...modalStateMarca}
+                title="Marca"
+                tipoEquipos={seletedTipoEquipo}
+                id={
+                    modalStateMarca.content.toUpperCase() !== "AGREGAR"
+                    ? seletedMarca
+                    : null
+                }
+                confirn={
+                    modalStateMarca.content.toUpperCase() === "AGREGAR"
+                    ? postMarca
+                    : putMarca
+                }                       
+            />
+            <FormModelos
+                {...modalStateModelo}
+                title="Modelo"
+                confirn={putModelo}
+                id={seletedModelo}
+            />
         </>
     );
 }

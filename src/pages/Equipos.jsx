@@ -54,6 +54,7 @@ export function Equipos() {
     //peticion patch para la asignacion de un usuario
     const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
         try {
+            console.log({usuarios})
             const res = await axios.patch(`equipos/${id}/`, {usuarios});
             if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
             getEquipos();
@@ -76,7 +77,7 @@ export function Equipos() {
                 return { 
                     children: <FormEquipos id={id} />,
                     title: 'Actualizar especificaciones del equipo', 
-                    confirn: ({equipo}) => putEquipos(equipo, id)
+                    confirn: ({equipo}) => putEquipos(equipo)
                 }
             case "ESTADO":
                 return { 
@@ -154,6 +155,7 @@ export function Equipos() {
                         rows={equipos}
                         state={tablaState}
                         menu={menuState.handleAnchorEl}
+                        history={true}
                     />
                 </Grid>
             </Grid>

@@ -8,6 +8,6 @@ const intance = axios.create({
       }
 });
 
-intance.defaults.baseURL = 'http://172.17.245.104:8000/api/'; // --> url back api
+intance.defaults.baseURL = 'http://localhost:8000/api/'; // --> url back api
 
 export default intance

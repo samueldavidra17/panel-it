@@ -1,18 +1,19 @@
+import { useContext } from "react";
+import { useEffect } from "react";
 import axios from "utils/axioIntance";
 import { Grid } from "@mui/material";
 import { InputTexto } from "component/inputs";
-import { contextFormModelos } from "context/contextFormModelos";
-import { useContext } from "react";
-import { changePropertyModelo, setModelo } from "reducer/reducerModelo";
-import { useEffect } from "react";
+import { contextForm } from "context/contextForm";
+import { changeProperty, setState } from "reducer/reducerForm";
+import withModal from "utils/withModal";
 //componente formulario de modelos
-export function FormModelos({ id }){
-    const [state, dispatch] = useContext(contextFormModelos); //--> contexto del formulario de modelos
+function Form({ id }){
+    const [state, dispatch] = useContext(contextForm); //--> contexto formularios
     //peticion del modelo en base a un id recibido
     const getModelo = async () =>{
         try {
             const modelo = await axios.get(`modelos/${id}/`);
-            dispatch(setModelo(modelo.data));
+            dispatch(setState(modelo.data));
         } catch (error) {
             console.log(error);
         }
@@ -28,9 +29,11 @@ export function FormModelos({ id }){
                 <InputTexto 
                     input={state.nombre}
                     label="Nombre"
-                    accion={(value) => dispatch(changePropertyModelo({property: "nombre", value}))}
+                    accion={(value) => dispatch(changeProperty("nombre", value))}
                 />
             </Grid>
         </Grid>
     );
 } 
+
+export const FormModelos = withModal(Form)
