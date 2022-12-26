@@ -90,7 +90,7 @@ export function Marcas() {
                                 value={seletedMarca}
                                 onChange={({target: {value}}) => setSeletedMarca(parseInt(value))}
                             >
-                                <List>
+                                <List style={{maxHeight: 350, overflow: 'auto'}}>
                                     <Grid container>
                                         {
                                             marcas.map((marca, index) => (

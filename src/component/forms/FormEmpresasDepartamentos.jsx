@@ -1,24 +1,24 @@
 import { useContext, useEffect, useState } from "react";
 import axio from "utils/axioIntance";
-import { contextFormEmpresasDepartamentos } from "context/contextFormEmpresasDepartamentos";
 import { InputTexto } from "component/inputs";
-import { changePropertyEmpresa, changePropertyDepartamento, setEmpresa, setDepartamento } from "reducer/reducerEmpresaDepartamento";
+import { contextForm } from "context/contextForm";
+import { changeProperty, setState } from "reducer/reducerForm";
 import { Autocomplete, Checkbox, Grid, TextField } from "@mui/material";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import withModal from "utils/withModal";
 //componente formulario de empresas y departamentos
 //https://mui.com/material-ui/react-autocomplete/#multiple-values --> doc del componente autocomplete con multiple opciones
-export function FormEmpresasDepartamentos({ title, id }) {
-    //contexto fomulario de departamentos y empresas
-    const [state, dispatch] = useContext(contextFormEmpresasDepartamentos);
+ function Form({ title, id }) {
+    const [state, dispatch] = useContext(contextForm); // --> contexto fomulario 
     const [opciones, setOpciones] = useState([]); // --> estados de las opciones para seleccionar (departamentos o empresas)
     //valida si esta agregando/editanto, empresas o departamentos 
     const validarContent = title === "Empresas";
     const getOrganizacion = async () => {
         try {
             //peticion de la empresa o departamento si recibe un id
-            const organizacion = await axio.get(validarContent ? `empresas/${id}/` : `departamentos/${id}/`);
-            dispatch(validarContent ? setEmpresa(organizacion.data) : setDepartamento(organizacion.data));
+            const organizacion = await axio.get(`${title.toLowerCase()}/${id}/`);
+            dispatch(setState(organizacion.data));
         } catch (error) {
             console.log(error);
         }
@@ -43,13 +43,10 @@ export function FormEmpresasDepartamentos({ title, id }) {
         <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
                 <InputTexto
-                    input={validarContent ? state.empresa.nombre : state.departamento.nombre}
+                    input={state.nombre}
                     label="Nombre"
-                    accion={(value) =>
-                        dispatch(validarContent 
-                            ? changePropertyEmpresa({ value, property: "nombre" })
-                            : changePropertyDepartamento({ value, property: "nombre" })
-                        )}
+                    accion={(value) => dispatch(changeProperty("nombre", value))}
+
                 />
             </Grid>
             {
@@ -88,9 +85,7 @@ export function FormEmpresasDepartamentos({ title, id }) {
                             )}
                             onChange={(e, value) => {
                                 const id = value.map((i) => i.id);
-                                dispatch(validarContent 
-                                    ? changePropertyEmpresa({ value: id, property: "empresasDepartamentos" })
-                                    : changePropertyDepartamento({ value: id, property: "empresas" }))
+                                dispatch(changeProperty(validarContent ? "empresasDepartamentos" : "empresas", id))
                             }}
                         />
                     </Grid>
@@ -99,3 +94,5 @@ export function FormEmpresasDepartamentos({ title, id }) {
         </Grid>
     );
 }
+
+export const FormEmpresasDepartamentos = withModal(Form);

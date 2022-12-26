@@ -13,9 +13,8 @@ import {
     Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import Modal, { useModal } from "component/Modal";
+import { useModal } from "component/Modal";
 import Alerts, { useAlerts } from "component/Alerts";
-import ProviderFormEmpresasDepartamentos, { contextFormEmpresasDepartamentos } from "context/contextFormEmpresasDepartamentos";
 import { FormEmpresasDepartamentos } from "component/forms";
 import { InputSeleccionar } from "component/inputs";
 import { useRequest } from "utils/useRequest";
@@ -68,13 +67,11 @@ export function Organizaciones() {
         switch(content.toUpperCase()){
             case "EMPRESAS":
                 return {
-                    title: !edit ? "Agregar nueva empresa" : "Actualizar empresa",
-                    confirn: !edit ? ({empresa}) => postEmpresa(empresa) : ({empresa}) => putEmpresa(empresa, selected)
+                    confirn: !edit ? postEmpresa : putEmpresa
                 }
             case "DEPARTAMENTOS":
                 return {
-                    title: !edit ? "Agregar nueva departamento" : "Actualizar departamento",
-                    confirn: !edit ? ({departamento}) => postDepartamento(departamento) : ({departamento}) => putDepartamento(departamento, selected)
+                    confirn: !edit ? postDepartamento : putDepartamento
                 }
         }
     }
@@ -113,8 +110,8 @@ export function Organizaciones() {
                                 onClick={async () => {
                                     const { error , message } = 
                                     content.toUpperCase() === "EMPRESAS" 
-                                                    ? await putEmpresa(empresas.find((i) => i.id === selected), selected) 
-                                                    : await putDepartamento(departamentos.find((i) => i.id === selected), selected)
+                                                    ? await putEmpresa(empresas.find((i) => i.id === selected)) 
+                                                    : await putDepartamento(departamentos.find((i) => i.id === selected))
                                     alertState.handleOpen(error, message);
                             }}>
                                 Actualizar Relación
@@ -145,7 +142,7 @@ export function Organizaciones() {
                                     {!edit || content !== "Empresas" ? "Agregar" : "Actualizar"}
                                 </Button>
                             </Divider>
-                            <List>
+                            <List style={{maxHeight: 350, overflow: 'auto'}}>
                                 {
                                     empresas.map((empresa, index) => (
                                         <ListItem key={empresa.id} disablePadding
@@ -188,7 +185,7 @@ export function Organizaciones() {
                                     {!edit || content !== "Departamentos" ? "Agregar" : "Actualizar"}
                                 </Button>
                             </Divider>
-                            <List>
+                            <List style={{maxHeight: 350, overflow: 'auto'}}>
                                 {
                                     departamentos.map((departamento, index) => {
                                         const labelId = `checkbox-list-secondary-label-${departamento.nombre}`;
@@ -225,17 +222,13 @@ export function Organizaciones() {
                     </Paper>
                 </Grid>
             </Grid>
-            <ProviderFormEmpresasDepartamentos>
-                    <Modal
-                        {...getActionModal()}
-                        {...modalState}
-                        alert={alertState.handleOpen}
-                        context={contextFormEmpresasDepartamentos}
-                    >
-                        <FormEmpresasDepartamentos title={content} id={edit ? selected : null} />
-                    </Modal>
-                </ProviderFormEmpresasDepartamentos>
-                <Alerts state={alertState} />
+            <FormEmpresasDepartamentos
+                {...modalState}
+                title={content}
+                id={edit ? selected : null}
+                {...getActionModal()}
+            />
+            <Alerts {...alertState} />
         </RadioGroup>
     );
 }

@@ -77,7 +77,7 @@ export function TiposEquipos() {
                             value={selected}
                             onChange={({ target: { value }}) => setSelected(value)}
                         >
-                            <List>
+                            <List style={{maxHeight: 350, overflow: 'auto'}}>
                                 <Grid container>
 
                                     {
