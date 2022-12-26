@@ -2,21 +2,18 @@ import { Grid, List, ListItem, ListItemText } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Container } from '@mui/system';
 import axios from 'utils/axioIntance';
-import { contextFormEquipos } from 'context/contextFormEquipos';
+import { contextForm } from 'context/contextForm';
+import { setState } from 'reducer/reducerForm';
 import { useContext, useEffect } from 'react';
-import { setEquipo, setInformacion } from 'reducer/reducerEquipo';
+import withModal from 'utils/withModal';
 //componente de informacion detallada del equipo seleccionado
-export default function InformacionEquipos({ id }) {
-    const [state, dispatch] = useContext(contextFormEquipos);
-    const { equipo, informacion } = state;
+function InformacionEquipos({ id }) {
+    const [state, dispatch] = useContext(contextForm);
 
     const getEquipo = async () => {
         try {
-            const res = await axios.get(`equipos/${id}`);
-            const equipo = { ...res.data }
-            const informacion = { ...res.data.informacion }
-            dispatch(setEquipo(equipo));
-            dispatch(setInformacion(informacion));
+            const res = await axios.get(`equipos/${id}/`);
+            dispatch(setState(res.data));
         } catch (error) {
             console.log(error);
         }
@@ -28,7 +25,7 @@ export default function InformacionEquipos({ id }) {
     return (
         <Container>
             <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                Usario Responsable: {equipo.usuario}
+                Usario Responsable: {state.usuario}
             </Typography>
             <Typography variant="h6" gutterBottom>
                 Datos del equipo:
@@ -37,48 +34,48 @@ export default function InformacionEquipos({ id }) {
                 <Grid item xs={12} sm={4}>
                     <List disablePadding>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.tipo_equipo} secondary="Tipo Equipo" />
+                            <ListItemText primary={state.tipo_equipo} secondary="Tipo Equipo" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.serial} secondary="Serial" />
+                            <ListItemText primary={state.serial} secondary="Serial" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.csb} secondary="CSB" />
+                            <ListItemText primary={state.csb} secondary="CSB" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.so} secondary="Sistema Operativo" />
-                        </ListItem>
-                    </List>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <List disablePadding>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.marca} secondary="Marca" />
-                        </ListItem>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary= {equipo.serial_cargador} secondary="Serial Cargador" />
-                        </ListItem>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.dd} secondary="Disco Duro" />
-                        </ListItem>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.usuario_so} secondary="Usuario Windows" />
+                            <ListItemText primary={state.so} secondary="Sistema Operativo" />
                         </ListItem>
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <List disablePadding>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.modelos} secondary="Modelo" />
+                            <ListItemText primary={state.marca} secondary="Marca" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.serial_unidad} secondary="Serial Unidad" />
+                            <ListItemText primary= {state.serial_cargador} secondary="Serial Cargador" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.ram} secondary="RAM" />
+                            <ListItemText primary={state.dd} secondary="Disco Duro" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={equipo.tipo_ram} secondary="Tipo RAM" />
+                            <ListItemText primary={state.usuario_so} secondary="Usuario Windows" />
+                        </ListItem>
+                    </List>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <List disablePadding>
+                        <ListItem sx={{ py: 1, px: 0 }}>
+                            <ListItemText primary={state.modelos} secondary="Modelo" />
+                        </ListItem>
+                        <ListItem sx={{ py: 1, px: 0 }}>
+                            <ListItemText primary={state.serial_unidad} secondary="Serial Unidad" />
+                        </ListItem>
+                        <ListItem sx={{ py: 1, px: 0 }}>
+                            <ListItemText primary={state.ram} secondary="RAM" />
+                        </ListItem>
+                        <ListItem sx={{ py: 1, px: 0 }}>
+                            <ListItemText primary={state.tipo_ram} secondary="Tipo RAM" />
                         </ListItem>
                     </List>
                 </Grid>
@@ -89,21 +86,23 @@ export default function InformacionEquipos({ id }) {
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <ListItem sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={informacion.estatus} secondary="Estatus" />
+                        <ListItemText primary={state?.informacion?.estatus} secondary="Estatus" />
                     </ListItem>
                     <ListItem sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={informacion.asignacion} secondary="Asignación" />
+                        <ListItemText primary={state?.informacion?.asignacion} secondary="Asignación" />
                     </ListItem>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <ListItem sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={informacion.ubicacion} secondary="Ubicación" />
+                        <ListItemText primary={state?.informacion?.ubicacion} secondary="Ubicación" />
                     </ListItem>
                     <ListItem sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={informacion.observacion} secondary="Observación" />
+                        <ListItemText primary={state?.informacion?.observacion} secondary="Observación" />
                     </ListItem>
                 </Grid>
             </Grid>
         </Container>
     );
 }
+
+export default withModal(InformacionEquipos);

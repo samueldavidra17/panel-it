@@ -38,7 +38,6 @@ export function Equipos() {
     const tablaState = useTabla();
     const modalState = useModal();
     const menuState = useMenu();
-    const alertState = useAlerts();
 
     const id = tablaState.selected; // --> id seleccionado en la tabla
     //estado para el filtrado por busqueda
@@ -52,9 +51,8 @@ export function Equipos() {
     const { data: equipos, getPaginations: getEquipos, post: postEquipos, put: putEquipos } = useRequest("equipos/");
     const { put: putInformacion } = useRequest("informacion/");
     //peticion patch para la asignacion de un usuario
-    const patchUsuarioEquipo = async ({ equipo: { usuarios } }) => {
+    const patchUsuarioEquipo = async ({usuarios}) => {
         try {
-            console.log({usuarios})
             const res = await axios.patch(`equipos/${id}/`, {usuarios});
             if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
             getEquipos();
@@ -68,34 +66,36 @@ export function Equipos() {
     const getModalContent = () => {
         switch (modalState.content.toUpperCase()) {
             case "AGREGAR":
-                return { 
-                    children: <FormEquipos />,
-                    title: 'Agregar nuevo equipo', 
-                    confirn: ({equipo}) => postEquipos(equipo)
-                }
+                return <FormEquipos 
+                        {...modalState}  
+                        title='Equipo' 
+                        confirn={postEquipos}
+                    />
             case "ACTUALIZAR":
-                return { 
-                    children: <FormEquipos id={id} />,
-                    title: 'Actualizar especificaciones del equipo', 
-                    confirn: ({equipo}) => putEquipos(equipo)
-                }
+                return <FormEquipos 
+                        {...modalState}  
+                        title='Equipo' 
+                        id={id}
+                        confirn={(state) => {
+                            console.log(state)
+                            putEquipos(state);
+                        }}
+                    />
             case "ESTADO":
-                return { 
-                    children: <FormInformacion id={id} />,
-                    title: 'Actualizar estado del equipo', 
-                    confirn: ({informacion}) => putInformacion(informacion, id)
-                }
+                return <FormInformacion 
+                        {...modalState}
+                        title="Equipo"
+                        id={id} 
+                        confirn={putInformacion}
+                    />
             case "ASIGNAR":
-                return { 
-                    children: <FormAsignarUsuarios id={id} />,
-                    title: 'Asignar usuario', 
-                    confirn: patchUsuarioEquipo
-                }
+                return <FormAsignarUsuarios 
+                        {...modalState}
+                        title= "Usuario"
+                        confirn={patchUsuarioEquipo}
+                    />
             case "DETALLES":
-                return { 
-                    children: <InformacionEquipos id={id} />,
-                    title: 'Información del equipo', 
-                }
+                return <InformacionEquipos {...modalState} id={id} title="Equipo"/>
         }
     }
 
@@ -133,15 +133,8 @@ export function Equipos() {
                     </Button>
                     <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
                 </Grid>
-                <ProviderFormEquipos>
-                    <Modal
-                        {...modalState}
-                        {...getModalContent()}
-                        alert={alertState.handleOpen}
-                        context={contextFormEquipos}
-                    />
-                    <Alerts state={alertState} />
-                </ProviderFormEquipos>
+                {/* Formulario */}
+                {modalState.open ? getModalContent() : null}
                 <Grid item>
                     <InputTexto
                         label="Seach"
@@ -155,7 +148,6 @@ export function Equipos() {
                         rows={equipos}
                         state={tablaState}
                         menu={menuState.handleAnchorEl}
-                        history={true}
                     />
                 </Grid>
             </Grid>

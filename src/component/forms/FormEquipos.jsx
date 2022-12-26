@@ -2,20 +2,20 @@ import { useContext, useEffect, useState } from 'react';
 import axios from "utils/axioIntance";
 import { Grid } from '@mui/material'
 import { InputSeleccionar, InputTexto } from '../inputs';
-import { contextFormEquipos } from 'context/contextFormEquipos';
-import { changePropertyEquipo, setEquipo } from 'reducer/reducerEquipo';
+import { contextForm } from 'context/contextForm';
+import { changeProperty, setState } from 'reducer/reducerForm';
+import withModal from 'utils/withModal';
 //componete formulario de los equipos
-export function FormEquipos({ id }) {
-  const [state, dispatch] = useContext(contextFormEquipos); // --> contexto con el estado del form de equipos
-  const { equipo } = state; // --> se estrae el equipo solamente
-  const changeEquipo = (property, value) => dispatch(changePropertyEquipo({ property, value }));
+function Form({ id }) {
+  const [state, dispatch] = useContext(contextForm); // --> contexto con el estado del form de equipos
+  const changeEquipo = (property, value) => dispatch(changeProperty(property, value));
   //peticion del equipo en caso de que se envie un id
   //se modifica el json a recibir para poder realizar el envio adecuado
   const getEquipo = async () => {
     try {
       const equipo = await axios.get(`equipos/${id}/`);
       const res = {...equipo.data, modelosforeignkey: equipo.data.modelo_id, usuariosforeignkey: equipo.data.usuario.id}
-      dispatch(setEquipo(res));
+      dispatch(setState(res));
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +49,7 @@ export function FormEquipos({ id }) {
     try {
       const marcas = await axios.get('marcas/', {
         params: {
-          tiposEquiposMarcas: equipo.tipoEquipos_id
+          tiposEquiposMarcas: state.tipoEquipos_id
         }
       });
       setMarcas(marcas.data);
@@ -62,8 +62,8 @@ export function FormEquipos({ id }) {
     try {
       const modelos = await axios.get('modelos/', { 
         params: { 
-          tiposEquiposMarcas_id__tiposEquipos_id: equipo.tipoEquipos_id,
-          tiposEquiposMarcas_id__marcas_id: equipo.marca_id,
+          tiposEquiposMarcas_id__tiposEquipos_id: state.tipoEquipos_id,
+          tiposEquiposMarcas_id__marcas_id: state.marca_id,
 
         } 
       });
@@ -80,21 +80,21 @@ export function FormEquipos({ id }) {
   }, []);
   //peticion de las marcas al seleccionar un tipo de equipo
   useEffect(() => {
-    if(equipo.tipoEquipos_id)
+    if(state.tipoEquipos_id)
       opcionesMarcas();
-  }, [equipo.tipoEquipos_id]);
+  }, [state.tipoEquipos_id]);
   //peticion de los modelos al seleccionar una marca
   useEffect(() => {
-    if(equipo.marca_id){
+    if(state.marca_id){
       opcionesModelos();
     }
-  }, [equipo.marca_id]);
+  }, [state.marca_id]);
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={equipo ? equipo.tipoEquipos_id : null}
+          input={state.tipoEquipos_id}
           label={"Tipo Equipo"}
           opciones={opciones.tiposEquipos}
           accion={(value) => changeEquipo('tipoEquipos_id', value)}
@@ -102,7 +102,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={equipo ? equipo.marca_id : null}
+          input={state.marca_id}
           label={"Marca"}
           opciones={marcas}
           accion={(value) => changeEquipo('marca_id', value)} 
@@ -111,7 +111,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={equipo ? equipo.modelo_id : null}
+          input={state.modelo_id}
           label={"Modelo"}
           opciones={modelo}
           accion={(value) => changeEquipo('modelos', value)}
@@ -120,7 +120,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={equipo ? equipo.tipo_ram : null}
+          input={state.tipo_ram}
           label={"Tipo Ram"}
           opciones={opciones.tiposRam}
           accion={(value) => changeEquipo('tipo_ram', value)}
@@ -128,7 +128,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputTexto
-          input={equipo ? equipo.ram : null}
+          input={state.ram}
           label={"Ram"}
           adornment={"GB"}
           accion={(value) => changeEquipo('ram', value)}
@@ -136,7 +136,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputTexto
-          input={equipo ? equipo.dd : null}
+          input={state.dd}
           label={"Disco Duro"}
           adornment={"GB"}
           accion={(value) => changeEquipo('dd', value)}
@@ -144,7 +144,7 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputSeleccionar
-          input={equipo ? equipo.empresa_id : null}
+          input={state.empresa_id}
           label={"Empresas"}
           opciones={opciones.empresas}
           accion={(value) => changeEquipo('empresas', value)}
@@ -152,49 +152,49 @@ export function FormEquipos({ id }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={equipo ? equipo.usuario_so : null}
+          input={state.usuario_so}
           label={"Nombre Equipo"}
           accion={(value) => changeEquipo('usuario_so', value)}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
         <InputTexto
-          input={equipo ? equipo.csb : null}
+          input={state.csb}
           label={"CSB"}
           accion={(value) => changeEquipo('csb', value)}
         />
       </Grid>
       <Grid item xs={12} sm={8}>
         <InputTexto
-          input={equipo ? equipo.serial : null}
+          input={state.serial}
           label={"Serial"}
           accion={(value) => changeEquipo('serial', value)}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={equipo ? equipo.serial_unidad : null}
+          input={state.serial_unidad}
           label={"Serial Unidad"}
           accion={(value) => changeEquipo('serial_unidad', value)}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={equipo ? equipo.serial_cargador : null}
+          input={state.serial_cargador}
           label={"Serial Cargador"}
           accion={(value) => changeEquipo('serial_cargador', value)}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
         <InputTexto
-          input={equipo ? equipo.antivirus : null}
+          input={state.antivirus}
           label={"Antivirus"}
           accion={(value) => changeEquipo('antivirus', value)}
         />
       </Grid>
       <Grid item xs={12} sm={8}>
         <InputSeleccionar
-          input={equipo ? equipo.so : null}
+          input={state.so}
           label={"Sistema Operativo"}
           opciones={opciones.so}
           accion={(value) => changeEquipo('so', value)}
@@ -203,3 +203,5 @@ export function FormEquipos({ id }) {
     </Grid>
   );
 }
+
+export const FormEquipos = withModal(Form);

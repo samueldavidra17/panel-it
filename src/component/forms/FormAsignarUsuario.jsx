@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from "utils/axioIntance";
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { contextFormEquipos } from 'context/contextFormEquipos';
-import { changeUsuario } from 'reducer/reducerEquipo';
+import { contextForm } from 'context/contextForm';
+import { changeProperty } from 'reducer/reducerForm';
+import withModal from 'utils/withModal';
 //componete formulario para asignar usuarios
 //https://mui.com/material-ui/react-autocomplete/#main-content --> doc componente Autocomplete
-export function FormAsignarUsuarios() {
-    const [state, dispatch] = useContext(contextFormEquipos); // --> contexto del formEquipos 
+function Form() {
+    const [state, dispatch] = useContext(contextForm); // --> contexto del formEquipos 
     const [opciones, setOpciones] = useState([]);
     //peticion de los usuarios registrados
     const getOpciones = async () => {
@@ -46,9 +47,11 @@ export function FormAsignarUsuarios() {
                             }}
                         />
                     )}
-                    onChange={(e, value) => dispatch(changeUsuario(value.id))}
+                    onChange={(e, value) => dispatch(changeProperty("usuarios", value.id))}
                 />
             </Grid>
         </Grid>
     );
 }
+
+export const FormAsignarUsuarios = withModal(Form);

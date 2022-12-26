@@ -1,24 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from "utils/axioIntance";
-import { contextFormEquipos } from 'context/contextFormEquipos';
-import { Grid } from '@mui/material'
+import { Grid } from '@mui/material';
 import { InputSeleccionar, InputTexto } from '../inputs';
-import { changePropertyInformacion, setInformacion } from 'reducer/reducerEquipo';
+import { contextForm } from 'context/contextForm';
+import { changeProperty, setState } from 'reducer/reducerForm';
+import withModal from 'utils/withModal';
 //componente formulario para el cambio de estado de informacion de los equipos
 //(estatus, asignacion, ubicacion y observaciones)
-export function FormInformacion({ id }) {
-  const [state, dispatch] = useContext(contextFormEquipos); // --> contexto con el estado del equipo del form
-  const { informacion } = state; // --> se extrae la informacion nada mas
-
+function Form({ id }) {
+  const [state, dispatch] = useContext(contextForm); // --> contexto form
   //funcion para cambiar una propiedad del json en el reducer del contexto en base a una propiedad dada en el input
-  const changeInformacion = (property, value) => dispatch(changePropertyInformacion({ property, value }));
+  const changeInformacion = (property, value) => dispatch(changeProperty(property, value));
 
   //peticion para traer la informacion de un equipo/impresora en caso de enviar id
   const getInformacion= async () => {
     try {
       const informacion = await axios.get(`informacion/${id}/`);
       const res = {...informacion.data, ubicaciones: informacion.data.ubicaciones.id}
-      dispatch(setInformacion(res));
+      dispatch(setState(res));
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +47,7 @@ export function FormInformacion({ id }) {
       <Grid container spacing={3}>
         <Grid item xs={6} sm={4}>
           <InputSeleccionar 
-            input={informacion ? informacion.estatus : null}
+            input={state.estatus}
             label={"Estatus"} 
             opciones={opciones.estatus}
             accion={(value) => changeInformacion('estatus', value)}
@@ -56,7 +55,7 @@ export function FormInformacion({ id }) {
         </Grid>
         <Grid item xs={6} sm={4}>
           <InputSeleccionar 
-            input={informacion ? informacion.asignacion : null}
+            input={state.asignacion}
             label={"Asignación"} 
             opciones={opciones.asignaciones}
             accion={(value) => changeInformacion('asignacion', value)}
@@ -64,7 +63,7 @@ export function FormInformacion({ id }) {
         </Grid>
         <Grid item xs={6} sm={4}>
           <InputSeleccionar 
-            input={informacion ? informacion.ubicaciones : null}
+            input={state.ubicaciones}
             label={"Ubicación"} 
             opciones={opciones.ubicaciones} 
             accion={(value) => changeInformacion('ubicaciones', value)}
@@ -72,7 +71,7 @@ export function FormInformacion({ id }) {
         </Grid>
         <Grid item xs={12} sm={12}>
           <InputTexto 
-            input={informacion ? informacion.observacion : null}
+            input={state.observacion}
             label={"Observaciones"} 
             accion={(value) => changeInformacion('observacion', value)}
           />
@@ -80,3 +79,5 @@ export function FormInformacion({ id }) {
       </Grid>
   );
 }
+
+export const FormInformacion = withModal(Form);
