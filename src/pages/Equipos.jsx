@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'utils/axioIntance';
 import { Button, Grid } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ProviderFormEquipos, { contextFormEquipos } from 'context/contextFormEquipos';
-import Modal, { useModal } from 'component/Modal';
+import { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
-import Alerts, { useAlerts } from 'component/Alerts';
 import { FormEquipos, FormInformacion, FormAsignarUsuarios } from 'component/forms';
 import { InputTexto } from 'component/inputs';
 import InformacionEquipos from 'component/InformacionEquipos';
@@ -43,7 +41,7 @@ export function Equipos() {
     //estado para el filtrado por busqueda
     const [search, setSearch] = useState('');
     const handlerSearch = (busqueda) => {
-        tablaState.handleSelected(id)
+        tablaState.clear();
         setSearch(busqueda);
     }
     //llamado al custom hook para la peticiones en la pagina
@@ -76,10 +74,7 @@ export function Equipos() {
                         {...modalState}  
                         title='Equipo' 
                         id={id}
-                        confirn={(state) => {
-                            console.log(state)
-                            putEquipos(state);
-                        }}
+                        confirn={(state) => putEquipos({...state, modelos: state.modelo_id})}
                     />
             case "ESTADO":
                 return <FormInformacion 
@@ -134,7 +129,7 @@ export function Equipos() {
                     <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
                 </Grid>
                 {/* Formulario */}
-                {modalState.open ? getModalContent() : null}
+                {getModalContent()}
                 <Grid item>
                     <InputTexto
                         label="Seach"
@@ -148,6 +143,7 @@ export function Equipos() {
                         rows={equipos}
                         state={tablaState}
                         menu={menuState.handleAnchorEl}
+                        history={true}
                     />
                 </Grid>
             </Grid>

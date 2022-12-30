@@ -6,40 +6,48 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Paper } from '@mui/material';
+import { Backdrop, CircularProgress, Paper } from '@mui/material';
 import axios from 'utils/axioIntance';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 //componente login para el inicio de sesion
 export function Login() {
-    const navigate = useNavigate();
-    //peticion de de inicio de sesion en el servidor 
-    //el token de respuesta se almacena en un sesion storage
-    const login = async (body) => {
-        try {
-            const res = await axios.post('login/', body, {
-                withCredentials: false
-            });
-            if(res.status === 403) alert("usuario o contraseña invalido");
-            sessionStorage.setItem('token',res.data.token);
-            window.location.href = "http://localhost:3000/equipos";
-        } catch (error) {
-            console.log(error);
-        }
+  //estado si esta cargando la peticion de inicio de sesion
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  //peticion de de inicio de sesion en el servidor 
+  //el token de respuesta se almacena en un sesion storage
+  const login = async (body) => {
+    try {
+      const res = await axios.post('login/', body, {
+        withCredentials: false
+      });
+      if (res.status !== 200) {
+        alert("usuario o contraseña invalido");
+        throw res.data;
+      }
+      sessionStorage.setItem('token', res.data.token);
+      window.location.href = "http://172.17.245.162:3000/equipos";
+    } catch (error) {
+      console.log(error);
     }
+  }
   //recuperacion de los datos del formulario al dar click en el boton de envio (submit)
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const body  = {
-        username: data.get('username'),
-        password: data.get('password'),
-      }
+    const body = {
+      username: data.get('username'),
+      password: data.get('password'),
+    }
     login(body);
   };
 
   return (
-      <Container component="main" maxWidth="xs">
-        <Paper elevation={3} sx={{ padding: 5, marginTop: 8,}}>
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={3} sx={{ padding: 5, marginTop: 8, }}>
         <CssBaseline />
         <Box
           sx={{
@@ -79,7 +87,14 @@ export function Login() {
             </Button>
           </Box>
         </Box>
-        </Paper>
-      </Container>
+      </Paper>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        onClick={() => setLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </Container>
   );
 }

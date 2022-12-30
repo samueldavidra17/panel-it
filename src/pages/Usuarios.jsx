@@ -76,8 +76,8 @@ export function Usuarios() {
                         <FormUsuarios 
                             {...modalState}
                             title="Usuario"
-                            id={id}
-                            confirn={!id ? postUsuarios : putUsuarios } 
+                            id={modalState.content.toUpperCase() !== "AGREGAR" ? id : null}
+                            confirn={modalState.content.toUpperCase() === "AGREGAR" ? postUsuarios : putUsuarios } 
                         />
                     </Grid>
                 <Grid item sm={12}>

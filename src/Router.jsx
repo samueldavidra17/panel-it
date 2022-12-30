@@ -12,12 +12,10 @@ const AppRoute = () => {
   //peticion al back si se encuentra una sesion activa
   const getSesion = async () => {
     try {
-      const res = await axios.get('/equipos', {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem('token')}` 
-        }
+      const res = await axios.get('equipos', {
+        withCredentials: false
       });
-      if(res.status === 403) window.location.href = "http://localhost:3000/login";;
+      if(res.status === 403) window.location.href = "http://172.17.245.162:3000/login";;
     } catch (error) { 
       console.log(error);
     }

@@ -14,8 +14,9 @@ function Form({ id }) {
   const getEquipo = async () => {
     try {
       const equipo = await axios.get(`equipos/${id}/`);
-      const res = {...equipo.data, modelosforeignkey: equipo.data.modelo_id, usuariosforeignkey: equipo.data.usuario.id}
-      dispatch(setState(res));
+      delete equipo.data.informacion;
+      delete equipo.data.historial;
+      dispatch(setState(equipo.data));
     } catch (error) {
       console.log(error);
     }
