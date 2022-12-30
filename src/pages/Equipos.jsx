@@ -20,7 +20,7 @@ const columns = [
     { id: 'csb', label: 'CSB' },
     { id: 'tipo_equipo', label: 'Tipo Equipo' },
     { id: 'modelo', label: 'Modelo' },
-    {id: 'marca', label: 'Marca' }
+    { id: 'marca', label: 'Marca' }
 ];
 //opciones activas en el menu
 const menu = [
@@ -49,10 +49,10 @@ export function Equipos() {
     const { data: equipos, getPaginations: getEquipos, post: postEquipos, put: putEquipos } = useRequest("equipos/");
     const { put: putInformacion } = useRequest("informacion/");
     //peticion patch para la asignacion de un usuario
-    const patchUsuarioEquipo = async ({usuarios}) => {
+    const patchUsuarioEquipo = async ({ usuarios }) => {
         try {
-            const res = await axios.patch(`equipos/${id}/`, {usuarios});
-            if(res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
+            const res = await axios.patch(`equipos/${id}/`, { usuarios });
+            if (res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
             getEquipos();
             return { error: false, message: 'Se ha asignado el usuario al equipo' };
         } catch (error) {
@@ -64,33 +64,33 @@ export function Equipos() {
     const getModalContent = () => {
         switch (modalState.content.toUpperCase()) {
             case "AGREGAR":
-                return <FormEquipos 
-                        {...modalState}  
-                        title='Equipo' 
-                        confirn={postEquipos}
-                    />
+                return <FormEquipos
+                    {...modalState}
+                    title='Equipo'
+                    confirn={postEquipos}
+                />
             case "ACTUALIZAR":
-                return <FormEquipos 
-                        {...modalState}  
-                        title='Equipo' 
-                        id={id}
-                        confirn={(state) => putEquipos({...state, modelos: state.modelo_id})}
-                    />
+                return <FormEquipos
+                    {...modalState}
+                    title='Equipo'
+                    id={id}
+                    confirn={(state) => putEquipos({ ...state, modelos: state.modelo_id })}
+                />
             case "ESTADO":
-                return <FormInformacion 
-                        {...modalState}
-                        title="Equipo"
-                        id={id} 
-                        confirn={putInformacion}
-                    />
+                return <FormInformacion
+                    {...modalState}
+                    title="Equipo"
+                    id={id}
+                    confirn={putInformacion}
+                />
             case "ASIGNAR":
-                return <FormAsignarUsuarios 
-                        {...modalState}
-                        title= "Usuario"
-                        confirn={patchUsuarioEquipo}
-                    />
+                return <FormAsignarUsuarios
+                    {...modalState}
+                    title="Usuario"
+                    confirn={patchUsuarioEquipo}
+                />
             case "DETALLES":
-                return <InformacionEquipos {...modalState} id={id} title="Equipo"/>
+                return <InformacionEquipos {...modalState} id={id} title="Equipo" />
         }
     }
 
@@ -100,54 +100,51 @@ export function Equipos() {
     }, [search, tablaState.page, tablaState.rowsPerPage]);
 
     return (
-        <>
-            <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                rowSpacing={3}
-                columnSpacing={3}
-            >
-                <Grid item>
-                    <Button
-                        variant="outlined"
-                        onClick={modalState.handleContent}
-                    >
-                        Agregar
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button
-                        variant="outlined"
-                        disabled={!id ? true : false}
-                        endIcon={<KeyboardArrowDownIcon />}
-                        onClick={menuState.handleAnchorEl}
-                    >
-                        Acciones
-                    </Button>
-                    <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
-                </Grid>
-                {/* Formulario */}
-                {getModalContent()}
-                <Grid item>
-                    <InputTexto
-                        label="Seach"
-                        accion={handlerSearch}
-                        property="search"
-                    />
-                </Grid>
-                <Grid item sm={12}>
-                    <Tabla
-                        columns={columns}
-                        rows={equipos}
-                        state={tablaState}
-                        menu={menuState.handleAnchorEl}
-                        history={true}
-                    />
-                </Grid>
+        <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            rowSpacing={3}
+            columnSpacing={3}
+        >
+            <Grid item>
+                <Button
+                    variant="outlined"
+                    onClick={modalState.handleContent}
+                >
+                    Agregar
+                </Button>
             </Grid>
-
-        </>
+            <Grid item>
+                <Button
+                    variant="outlined"
+                    disabled={!id ? true : false}
+                    endIcon={<KeyboardArrowDownIcon />}
+                    onClick={menuState.handleAnchorEl}
+                >
+                    Acciones
+                </Button>
+                <MenuApp actions={menu} click={modalState.handleContent} state={menuState} />
+            </Grid>
+            {/* Formulario */}
+            {getModalContent()}
+            <Grid item>
+                <InputTexto
+                    label="Seach"
+                    accion={handlerSearch}
+                    property="search"
+                />
+            </Grid>
+            <Grid item sm={12}>
+                <Tabla
+                    columns={columns}
+                    rows={equipos}
+                    state={tablaState}
+                    menu={menuState.handleAnchorEl}
+                    history={true}
+                />
+            </Grid>
+        </Grid>
     );
 }

@@ -2,8 +2,17 @@ import { useState } from 'react';
 import axios from 'utils/axioIntance';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Dispositivos, Equipos, Impresoras, Otros, Login, Marcas, Organizaciones, TiposEquipos, Usuarios } from "pages";
 import NavBar from "component/navegacion/NavBar";
+import { 
+  Dispositivos, 
+  Equipos, 
+  Impresoras, 
+  Otros, Login, 
+  Marcas, 
+  Organizaciones, 
+  TiposEquipos, 
+  Usuarios, 
+  Pdf} from "pages";
 //rutas del renderizado de los componentes del panel
 //https://reactrouter.com/en/main --> doc de reac-router-dom para el manejo de las rutas
 const AppRoute = () => {
@@ -34,6 +43,7 @@ const AppRoute = () => {
         <Route exact path="tiposequipos" element={<TiposEquipos />} />
         <Route exact path="organizaciones" element={<Organizaciones />} />
         <Route exact path="usuarios" element={<Usuarios />} />
+        <Route exact path="pdf" element={<Pdf />} />
       </Routes>
     </NavBar>
   );

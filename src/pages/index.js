@@ -7,3 +7,4 @@ export * from "./Usuarios";
 export * from "./TiposEquipos";
 export * from "./Dispositivos";
 export * from "./Impresoras";
+export * from "./Pdf";

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from './axioIntance';
 //Custom hook para las peticiones mas usadas a la api (get, post, put y paginacion)
 //https://es.reactjs.org/docs/hooks-custom.html --> doc de react sobre los custom hooks
@@ -8,7 +8,6 @@ import axios from './axioIntance';
 export function useRequest(uri){
     //estado con la informacion pedida y si esta cargada o no (futura mejora)
     const [data, setData] = useState([]);
-    const [load, setLoad] = useState(false);
 
     const set = (value) => setData(value);
     //peticion get que si recibe parametros de busqueda los genera
@@ -60,13 +59,8 @@ export function useRequest(uri){
         }
     }
 
-    useEffect(() => {
-        if(data.length > 0) setLoad(true);
-    }, []);
-
     return {
         data,
-        load,
         get,
         getPaginations,
         set,
