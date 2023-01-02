@@ -1,52 +1,33 @@
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import { useState, useRef} from 'react';
 import NotaEntrega from 'component/PDF/NotaEntrega';
-import { Button, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, OutlinedInput, Paper, TextField, Typography } from '@mui/material';
+import { Button, Grid, IconButton, List, ListItem, ListItemText, Paper, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useRequest } from 'utils/useRequest';
 
-const title = "NOTA DE ENTREGA";
+const listApp = [
+    '7Zip, Winrar',
+    'Teamviewer, AnyDesk',
+    'Microsoft Office 2019',
+    'Mozilla Firefox, Chrome',
+    'Antivirus ESET',
+    'SAP GUI'
+]
 
-const usuario = {
-    nombre: "Samuel Ramirez",
-    cargo: 'Analista de Aplicaciones'
-  }
-  
-  const equipo = {
-    informacion: {
-      "estatus": "INOPERATIVA",
-      "asignacion": "DAÑADA",
-      "observacion": "S/N",
-      "ubicacion": "AGROBEL"
-    },
-    id: 1,
-    departamento: "ADMINISTRACION",
-    ubicacion: "AGROBEL",
-    serial: "LKADD43",
-    serial_cargador: "NO APLICA",
-    serial_unidad: "NO TIENE",
-    dd: "80GB",
-    ram: "2GB",
-    tipo_ram: "DDR",
-    csb: "S/N",
-    tipo_equipo: "DESKTOP",
-    tipoEquipos_id: "E-2",
-    antivirus: "S/N",
-    usuario_so: "TTB012",
-    so: "MICROSOFT WINDOWS 7",
-    modelos: "8215-35S",
-    modelo_id: 1,
-    marca: "LENOVO",
-    marca_id: 1,
-    usuario: "DISPONIBLE",
-    empresa_id: 1,
-    historial: []
-  }
-  
 export function Pdf() {
-
-    const [apps, setApps] = useState([]);
+    //id del equipo por parametro de la url
+    const { id } = useParams();
+    //estados del pdf:
+    //Equipo a generar la nota de entrega
+    const [equipo, setEquipo] = useState([]);
+    //Lista de apps para agregar
+    const [apps, setApps] = useState(listApp);
+    //Texto condicional al asignar el equipo
     const [textConditional, setTextConditional] = useState(null);
+    //observacion adicional 
     const [note, setNote] = useState(null);
 
     const appRef = useRef();
@@ -61,10 +42,26 @@ export function Pdf() {
             appRef.current.value = "";
         }
     }
-    const getPdf = () => (<NotaEntrega {...{apps, textConditional, note, equipo, usuario}} />)
+    const getPdf = () => (<NotaEntrega {...{apps, textConditional, note, equipo}} />)
+    
+    const { getOne } = useRequest('equipos/')
+    const getEquipo = async () => {
+        try {
+            const equipo = await getOne(id);
+            setEquipo(equipo);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        getEquipo();
+    },[id])
+
+    const title = `Nota de entrega - ${equipo.usuario_so} - ${equipo.marca} - ${equipo.usuario} ${equipo.usuario_cargo}.pdf`;
+
     return (
         <Grid
-            container
+        container
             rowSpacing={3}
             columnSpacing={3}>
             <Grid item sm={6}>
@@ -74,7 +71,7 @@ export function Pdf() {
                     columnSpacing={3}>
                     <Grid item sm={12}>
                         <Button variant="outlined">
-                            <PDFDownloadLink document={getPdf()} fileName={`${title}.pdf`}>
+                            <PDFDownloadLink document={getPdf()} fileName={title}>
                                 {({ blob, url, loading, error }) =>
                                     loading ? 'Cargando...' : 'Descargar'
                                 }
@@ -187,7 +184,7 @@ export function Pdf() {
                 </Grid>
             </Grid>
             <Grid item sm={6}>
-                <PDFViewer showToolbar={false} width={850} height={1000}>
+                <PDFViewer showToolbar={false} width={825} height={1000}>
                     {getPdf()}
                 </PDFViewer>
             </Grid>

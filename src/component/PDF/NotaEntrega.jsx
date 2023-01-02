@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     display: 'flex',
     flexDirection: 'row',
-    textAlign: 'center', 
+    textAlign: 'center',
     justifyContent: 'center'
   }
 });
@@ -81,7 +81,6 @@ const list = [
   { id: "serial_cargador", name: "Serial Cargador" },
   { id: "ram", name: "Memoria RAM" },
   { id: "dd", name: "Disco Duro" },
-  { id: "so", name: "Sistema Operativo" },
   { id: "usuario_so", name: "Nombre PC" }
 ];
 
@@ -92,9 +91,11 @@ const normas = [
   "4. En caso de hurto de equipos electrónicos y de computación de la empresa en los sitios indicados en los numerales 2 y 3, la persona debe cancelar la totalidad del equipo de acuerdo al valor que tenga este establecido en el mercado (verificado por la Gerencia IT). ",
   "5. Ante una situación de pérdida ó hurto de equipos electrónicos y de computación, debe comunicarse inmediatamente con la unidad de PCP los cuales le orientaran sobre los pasos a seguir. La Jefatura de PCP determinará la cancelación o no del mismo basándose en las condiciones de la pérdida."
 ]
-const NotaEntrega = ({ equipo, usuario, textConditional, note, apps }) => (
+const NotaEntrega = ({ equipo, textConditional, note, apps }) => {
+
+  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
   //Configuración de la página
-  <Document>
+  return (<Document>
     <Page size="A4" style={styles.page}>
       {/* Fecha */}
       <Image src={logo} style={styles.img} />
@@ -107,7 +108,7 @@ const NotaEntrega = ({ equipo, usuario, textConditional, note, apps }) => (
       </Text>
       {/* Primer Parrafo */}
       <Text style={styles.parrafo}>
-        Gerencia de IT por medio de la presente le hace entrega al Sr(a): {<Text style={{ ...styles.negrita, textDecorationStyle: 'underline black' }}>{usuario.nombre + " - " + usuario.cargo}</Text>} {textConditional}. El equipo cuenta con las siguientes características:
+        Gerencia de IT por medio de la presente le hace entrega al Sr(a): {<Text style={{ ...styles.negrita, textDecorationStyle: 'underline black' }}>{equipo.usuario + " - " + equipo.usuario_cargo}</Text>} {textConditional}. El equipo cuenta con las siguientes características:
       </Text>
       <View style={styles.parrafo}>
         {
@@ -124,7 +125,7 @@ const NotaEntrega = ({ equipo, usuario, textConditional, note, apps }) => (
           })
         }
       </View>
-     { note ? <Text style={{...styles.negrita, ...styles.parrafo}}>{`Observación: ${note}`}</Text> : null}
+      {note ? <Text style={{ ...styles.negrita, ...styles.parrafo }}>{`Observación: ${note}`}</Text> : null}
       {
         // lista de aplicaciones equipo
         apps.length > 0
@@ -132,6 +133,7 @@ const NotaEntrega = ({ equipo, usuario, textConditional, note, apps }) => (
           <>
             <Text style={styles.parrafo}>El equipo cuenta con los siguientes programas instalados:</Text>
             <View style={styles.lista}>
+              <Text style={styles.item}>{'- '+equipo.so}</Text>
               {
                 apps.map((app) => (
                   <Text
@@ -155,28 +157,29 @@ const NotaEntrega = ({ equipo, usuario, textConditional, note, apps }) => (
         }
       </View>
       <View style={styles.firma}>
-      <View style={{width: '50%', marginRight: 60}}>
-        <Text>Entrega:</Text>
-        <Text style={{marginTop: 15}}>_____________________</Text>
-      </View>
-      <View style={{width: '50%'}}>
-        <Text>Recibe conforme:</Text>
-        <Text style={{marginTop: 15}}>_____________________</Text>
-      </View>
+        <View style={{ width: '50%', marginRight: 60 }}>
+          <Text>Entrega:</Text>
+          <Text style={{ marginTop: 15 }}>_____________________</Text>
+        </View>
+        <View style={{ width: '50%' }}>
+          <Text>Recibe conforme:</Text>
+          <Text style={{ marginTop: 15 }}>_____________________</Text>
+        </View>
       </View>
       <View style={styles.firma}>
-        <View style={{width: '50%', marginRight: 60}}>
-        <Text>{usuario.nombre}</Text>
-        <Text>{usuario.cargo}</Text>
-        <Text>Gerencia IT</Text>
+        <View style={{ width: '55%', marginRight: 60 }}>
+          <Text>{usuario.first_name}</Text>
+          <Text>{usuario.last_name}</Text>
+          <Text>Gerencia IT</Text>
         </View>
-        <View style={{width: '50%', textAlign: 'left'}}>
-        <Text>{usuario.nombre}</Text>
-        <Text>CI:</Text>
+        <View style={{ width: '45%', textAlign: 'left' }}>
+          <Text>{equipo.usuario}</Text>
+          <Text>CI:</Text>
         </View>
       </View>
     </Page>
   </Document>
 );
+}
 
 export default NotaEntrega;

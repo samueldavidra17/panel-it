@@ -19,6 +19,15 @@ export function useRequest(uri){
             console.log(error);
         }
     }
+    const getOne = async (id) => {
+        try {
+            const res = await axios.get(uri+id);
+            const data = await res.data;
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     //peticion get con paginacion
     //recibe el estado de la pagina
     const getPaginations = async (pagination, search = null) => {
@@ -62,6 +71,7 @@ export function useRequest(uri){
     return {
         data,
         get,
+        getOne,
         getPaginations,
         set,
         post,

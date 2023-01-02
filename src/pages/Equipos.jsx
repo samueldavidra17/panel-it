@@ -9,6 +9,7 @@ import { FormEquipos, FormInformacion, FormAsignarUsuarios } from 'component/for
 import { InputTexto } from 'component/inputs';
 import InformacionEquipos from 'component/InformacionEquipos';
 import { useRequest } from 'utils/useRequest';
+import { useNavigate } from 'react-router-dom';
 //columnas con su relacion de la propiedad en la tabla 
 //la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
@@ -31,6 +32,7 @@ const menu = [
 ];
 //componente de la pagina equipos
 export function Equipos() {
+    const navigate = useNavigate();
     //llamado a los custom hooks para el uso de:
     //la tabla, el modal y el menu
     const tablaState = useTabla();
@@ -88,9 +90,10 @@ export function Equipos() {
                     {...modalState}
                     title="Usuario"
                     confirn={patchUsuarioEquipo}
+                    redirect={() =>  navigate(`nota/${id}`)}
                 />
             case "DETALLES":
-                return <InformacionEquipos {...modalState} id={id} title="Equipo" />
+                return <InformacionEquipos {...modalState} id={id} title="Equipo"/>
         }
     }
 

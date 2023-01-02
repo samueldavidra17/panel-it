@@ -20,17 +20,19 @@ export function Login() {
   //el token de respuesta se almacena en un sesion storage
   const login = async (body) => {
     try {
-      const res = await axios.post('login/', body, {
-        withCredentials: false
-      });
+      console.log(body)
+      const res = await axios.post('login/', body)
       if (res.status !== 200) {
         alert("usuario o contraseña invalido");
         throw res.data;
       }
       sessionStorage.setItem('token', res.data.token);
+      sessionStorage.setItem('usuario', JSON.stringify(res.data.user));
       window.location.href = "http://172.17.245.162:3000/equipos";
     } catch (error) {
       console.log(error);
+    } finally{
+      setLoading(false);
     }
   }
   //recuperacion de los datos del formulario al dar click en el boton de envio (submit)

@@ -51,14 +51,14 @@ export default function MenuList() {
         </ListItemIcon>
         <ListItemText primary="Dispositivos" />
       </ListItemButton>
-      <ListItemButton component={Link} to="/glpi">
+      {/* <ListItemButton component={Link} to="/glpi">
         <ListItemIcon sx={{ minWidth }}>
           <Icon>
             <img alt="glpi" src={"./glpi.png"} height={25} width={25} />
           </Icon>
         </ListItemIcon>
         <ListItemText primary="GLPI" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton onClick={handleClick} >
         <ListItemIcon sx={{minWidth}}>
           <DisplaySettingsIcon />

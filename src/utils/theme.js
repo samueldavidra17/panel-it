@@ -10,6 +10,12 @@ const theme = createTheme({
             dark: '#008600',
             contrastText: '#fff',
         },
+        secondary: {
+            light: '#d1ff33',
+            main: '#c6ff00',
+            dark: '#8ab200',
+            contrastText: '#fff',
+        },
     },
     components: {
         MuiLink: {

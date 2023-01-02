@@ -1,6 +1,8 @@
 import { forwardRef, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import ArticleIcon from '@mui/icons-material/Article';
+import { Button, IconButton } from '@mui/material';
 //custom hook con los estados para el uso de las alertas,
 //con el estado de si se encuentra abierto, si muestra un error o no y el mensaje a visualizar
 //https://es.reactjs.org/docs/hooks-custom.html --> doc de react para crear custom hooks
@@ -39,11 +41,16 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 //componente snackbar que renderiza la alerta
 //https://mui.com/material-ui/react-snackbar/#main-content --> doc de los componentes snackbar
-export default function Alerts({open, error, message, handleClose }) {
-    
+export default function Alerts({open, error, message, handleClose, redirect }) {
+    const action = (
+        <Button color={'secondary'} size="small" variant='outlined' onClick={redirect} endIcon={<ArticleIcon />}>
+            Hacer Nota
+        </Button>
+      );
+
     return (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={!error ? "success" : "error"} sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity={!error ? "success" : "error"} sx={{ width: '100%' }} action={redirect && !error ? action : null }>
                 {message}
             </Alert>
         </Snackbar>

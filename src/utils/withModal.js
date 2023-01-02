@@ -16,7 +16,7 @@ const withModal = (Component) => {
             <Modal {...props} alert={alert.handleOpen} context={contextForm} >
                 <Component {...props}/>
             </Modal>
-            <Alerts {...alert} />
+            <Alerts {...alert} redirect={props.redirect}/>
         </ProviderForm>
         );
     }

@@ -43,7 +43,7 @@ const AppRoute = () => {
         <Route exact path="tiposequipos" element={<TiposEquipos />} />
         <Route exact path="organizaciones" element={<Organizaciones />} />
         <Route exact path="usuarios" element={<Usuarios />} />
-        <Route exact path="pdf" element={<Pdf />} />
+        <Route exact path="equipos/nota/:id" element={<Pdf />} />
       </Routes>
     </NavBar>
   );

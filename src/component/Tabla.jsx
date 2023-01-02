@@ -184,6 +184,7 @@ export default function Tabla({ columns, rows, state, menu, history }) {
                             .map((row) => {
                                 return (
                                     <Row
+                                        key={row.id}
                                         columns={columns}
                                         row={row}
                                         selected={selected}
