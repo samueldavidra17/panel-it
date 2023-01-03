@@ -1,15 +1,25 @@
 import { useState } from 'react';
-import { Box, Drawer, AppBar, CssBaseline, Toolbar, Typography, IconButton } from '@mui/material';
+import { Box, Drawer, AppBar, CssBaseline, Toolbar, Typography, IconButton, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'
 import MenuList from './MenuList';
+import MenuApp, { useMenu } from 'component/MenuApp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+const menu = ['Cerrar sesion']
 //componente navbar con la navegacion del panel
 //https://mui.com/material-ui/react-app-bar/ --> doc de los componentes app bar
 export default function NavBar({ children }) {
     const drawerWidth = 210;
     const [mobileOpen, setMobileOpen] = useState(false); // -->estado para abrir y cerrar el menu en dispositivos mobiles
-
+    const menuState = useMenu();
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
+    const user = JSON.parse(sessionStorage.getItem('usuario'));
+
+    const logOut = () => {
+        sessionStorage.clear();
+        window.location.reload();
+    }
     return (
         <Box sx={{ display: 'flex' }} onContextMenu={(e) =>   e.preventDefault()}>
             <CssBaseline />
@@ -24,9 +34,20 @@ export default function NavBar({ children }) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1}}>
                         Panel IT
                     </Typography>
+                    <Button
+                        sx={{ color: 'black'}}
+                        color='secondary'
+                        variant="contained"
+                        onClick={menuState.handleAnchorEl}
+                        disableElevation
+                        endIcon={<KeyboardArrowDownIcon />}
+                    >
+                        {user.first_name}
+                    </Button>
+                    <MenuApp actions={menu} click={logOut} state={menuState} />
                 </Toolbar>
             </AppBar>
             {/* se muestra en dispositivos mobiles */}
