@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { List, ListItemButton, ListItemIcon, ListItemText, Collapse, Icon } from '@mui/material';
+import { List, ListItemButton, ListItemIcon, ListItemText, Collapse, Icon, Divider } from '@mui/material';
 import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import PrintIcon from '@mui/icons-material/Print';
@@ -59,14 +59,15 @@ export default function MenuList() {
         </ListItemIcon>
         <ListItemText primary="GLPI" />
       </ListItemButton> */}
-      <ListItemButton onClick={handleClick} >
+      {/* <ListItemButton onClick={handleClick} >
         <ListItemIcon sx={{minWidth}}>
           <DisplaySettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Administración" sx={{marginRight: 15 }}/>
         {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      </ListItemButton> */}
+      {/* <Collapse in={open} timeout="auto" unmountOnExit> */}
+      <Divider variant='middle' />
         <List component="div" disablePadding>
             <ListItemButton sx={{ pl: paddingLeft }} component={Link} to="/organizaciones">
               <ListItemIcon sx={{minWidth}}>
@@ -99,7 +100,7 @@ export default function MenuList() {
               <ListItemText primary="Otros" />
             </ListItemButton>
         </List>
-      </Collapse>
+      {/* </Collapse> */}
     </List>
   );
 }

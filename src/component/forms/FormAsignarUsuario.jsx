@@ -47,7 +47,7 @@ function Form() {
                             }}
                         />
                     )}
-                    onChange={(e, value) => dispatch(changeProperty("usuarios", value.id))}
+                    onChange={(e, value) => dispatch(changeProperty("usuario", value.id))}
                 />
             </Grid>
         </Grid>

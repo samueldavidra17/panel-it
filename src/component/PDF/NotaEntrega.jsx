@@ -75,13 +75,13 @@ const styles = StyleSheet.create({
 
 const list = [
   { id: "marca", name: "Marca" },
-  { id: "modelos", name: "Modelo" },
+  { id: "modelo", name: "Modelo" },
   { id: "serial", name: "Serial" },
   { id: "csb", name: "CSB" },
   { id: "serial_cargador", name: "Serial Cargador" },
   { id: "ram", name: "Memoria RAM" },
   { id: "dd", name: "Disco Duro" },
-  { id: "usuario_so", name: "Nombre PC" }
+  { id: "nombre", name: "Nombre PC" }
 ];
 
 const normas = [
@@ -95,7 +95,8 @@ const NotaEntrega = ({ equipo, textConditional, note, apps }) => {
 
   const usuario = JSON.parse(sessionStorage.getItem('usuario'));
   //Configuración de la página
-  return (<Document>
+  return (
+  <Document>
     <Page size="A4" style={styles.page}>
       {/* Fecha */}
       <Image src={logo} style={styles.img} />

@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import axios from 'utils/axioIntance';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "component/navegacion/NavBar";
 import { 
@@ -16,15 +15,13 @@ import {
 //rutas del renderizado de los componentes del panel
 //https://reactrouter.com/en/main --> doc de reac-router-dom para el manejo de las rutas
 const AppRoute = () => {
-  const [sesion, setSesion] = useState({});
-  const navigate = useNavigate();
   //peticion al back si se encuentra una sesion activa
   const getSesion = async () => {
     try {
-      const res = await axios.get('equipos', {
+      const res = await axios.get('/', {
         withCredentials: false
       });
-      if(res.status === 403) window.location.href = "http://172.17.245.162:3000/login";;
+      if(res.status === 403) window.location.href = process.env.REACT_APP_BASE_URL+"login";;
     } catch (error) { 
       console.log(error);
     }
@@ -44,6 +41,7 @@ const AppRoute = () => {
         <Route exact path="organizaciones" element={<Organizaciones />} />
         <Route exact path="usuarios" element={<Usuarios />} />
         <Route exact path="equipos/nota/:id" element={<Pdf />} />
+        <Route exact path="*" element={<Navigate to='equipos' />} />
       </Routes>
     </NavBar>
   );
@@ -53,7 +51,7 @@ const AppRoute = () => {
 export default function Router() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/panel'>
       <Routes>
         <Route exact path="/*" element={<AppRoute />} />
         <Route exact path="/login" element={<Login />} />

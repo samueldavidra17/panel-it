@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
-import { FormImpresoras, FormInformacion } from 'component/forms';
+import { FormImpresoras, FormEstado } from 'component/forms';
 import { InputTexto } from 'component/inputs';
 import { useRequest } from 'utils/useRequest';
 //columnas con su relacion de la propiedad en la tabla 

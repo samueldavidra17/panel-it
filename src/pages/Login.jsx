@@ -8,19 +8,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Backdrop, CircularProgress, Paper } from '@mui/material';
 import axios from 'utils/axioIntance';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 //componente login para el inicio de sesion
 export function Login() {
   //estado si esta cargando la peticion de inicio de sesion
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
   //peticion de de inicio de sesion en el servidor 
   //el token de respuesta se almacena en un sesion storage
   const login = async (body) => {
     try {
-      console.log(body)
       const res = await axios.post('login/', body)
       if (res.status !== 200) {
         alert("usuario o contraseña invalido");
@@ -28,7 +24,7 @@ export function Login() {
       }
       sessionStorage.setItem('token', res.data.token);
       sessionStorage.setItem('usuario', JSON.stringify(res.data.user));
-      window.location.href = "http://172.17.245.162:3000/equipos";
+      window.location.href = process.env.REACT_APP_BASE_URL+"equipos";
     } catch (error) {
       console.log(error);
     } finally{

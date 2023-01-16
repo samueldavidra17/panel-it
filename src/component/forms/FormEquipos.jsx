@@ -115,15 +115,15 @@ function Form({ id }) {
           input={state.modelo_id}
           label={"Modelo"}
           opciones={modelo}
-          accion={(value) => changeEquipo('modelos', value)}
+          accion={(value) => changeEquipo('modelo', value)}
           desactivado={modelo.length > 0 ? false : true}
         />
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={state.tipo_ram}
+          input={state.tipo_ram_id}
           label={"Tipo Ram"}
-          opciones={opciones.tiposRam}
+          opciones={opciones.TiposRam}
           accion={(value) => changeEquipo('tipo_ram', value)}
         />
       </Grid>
@@ -153,9 +153,9 @@ function Form({ id }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <InputTexto
-          input={state.usuario_so}
+          input={state.nombre}
           label={"Nombre Equipo"}
-          accion={(value) => changeEquipo('usuario_so', value)}
+          accion={(value) => changeEquipo('nombre', value)}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -195,9 +195,9 @@ function Form({ id }) {
       </Grid>
       <Grid item xs={12} sm={8}>
         <InputSeleccionar
-          input={state.so}
+          input={state.so_id}
           label={"Sistema Operativo"}
-          opciones={opciones.so}
+          opciones={opciones.So}
           accion={(value) => changeEquipo('so', value)}
         />
       </Grid>

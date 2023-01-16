@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useModal } from 'component/Modal';
 import Tabla, { useTabla } from 'component/Tabla';
 import MenuApp, { useMenu } from 'component/MenuApp';
-import { FormEquipos, FormInformacion, FormAsignarUsuarios } from 'component/forms';
+import { FormEquipos, FormEstado, FormAsignarUsuarios } from 'component/forms';
 import { InputTexto } from 'component/inputs';
 import InformacionEquipos from 'component/InformacionEquipos';
 import { useRequest } from 'utils/useRequest';
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 //columnas con su relacion de la propiedad en la tabla 
 //la posicion en el arreglo representa la aparicion en la tabla
 const columns = [
-    { id: 'usuario_so', label: 'Nombre Equipo' },
+    { id: 'nombre', label: 'Nombre Equipo' },
     { id: 'usuario', label: 'Usuario Responsable' },
     { id: 'ubicacion', label: 'Ubicación' },
     { id: 'departamento', label: 'Departamento' },
@@ -49,13 +49,13 @@ export function Equipos() {
     //llamado al custom hook para la peticiones en la pagina
     //se renombra las propiedades obtenidas
     const { data: equipos, getPaginations: getEquipos, post: postEquipos, put: putEquipos } = useRequest("equipos/");
-    const { put: putInformacion } = useRequest("informacion/");
+    const { put: putInformacion } = useRequest("estado/");
     //peticion patch para la asignacion de un usuario
-    const patchUsuarioEquipo = async ({ usuarios }) => {
+    const patchUsuarioEquipo = async ({ usuario }) => {
         try {
-            const res = await axios.patch(`equipos/${id}/`, { usuarios });
+            const res = await axios.patch(`equipos/${id}/`, { usuario });
             if (res.status !== 200) return { error: true, message: 'Ha ocurrido un error' };
-            getEquipos();
+            getEquipos(tablaState, search);
             return { error: false, message: 'Se ha asignado el usuario al equipo' };
         } catch (error) {
             console.log(error);
@@ -79,7 +79,7 @@ export function Equipos() {
                     confirn={(state) => putEquipos({ ...state, modelos: state.modelo_id })}
                 />
             case "ESTADO":
-                return <FormInformacion
+                return <FormEstado
                     {...modalState}
                     title="Equipo"
                     id={id}

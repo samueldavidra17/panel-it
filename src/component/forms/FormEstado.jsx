@@ -15,9 +15,8 @@ function Form({ id }) {
   //peticion para traer la informacion de un equipo/impresora en caso de enviar id
   const getInformacion= async () => {
     try {
-      const informacion = await axios.get(`informacion/${id}/`);
-      const res = {...informacion.data, ubicaciones: informacion.data.ubicaciones.id}
-      dispatch(setState(res));
+      const res = await axios.get(`estado/${id}/`);
+      dispatch(setState(res.data));
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +48,7 @@ function Form({ id }) {
           <InputSeleccionar 
             input={state.estatus}
             label={"Estatus"} 
-            opciones={opciones.estatus}
+            opciones={opciones.Estatus}
             accion={(value) => changeInformacion('estatus', value)}
           />
         </Grid>
@@ -57,7 +56,7 @@ function Form({ id }) {
           <InputSeleccionar 
             input={state.asignacion}
             label={"Asignación"} 
-            opciones={opciones.asignaciones}
+            opciones={opciones.Asignaciones}
             accion={(value) => changeInformacion('asignacion', value)}
           />
         </Grid>
@@ -80,4 +79,4 @@ function Form({ id }) {
   );
 }
 
-export const FormInformacion = withModal(Form);
+export const FormEstado = withModal(Form);
