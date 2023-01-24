@@ -43,7 +43,7 @@ function InformacionEquipos({ id }) {
                             <ListItemText primary={state.csb} secondary="CSB" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={state.so} secondary="Sistema Operativo" />
+                            <ListItemText primary={state.so_nombre} secondary="Sistema Operativo" />
                         </ListItem>
                     </List>
                 </Grid>
@@ -59,14 +59,14 @@ function InformacionEquipos({ id }) {
                             <ListItemText primary={state.dd} secondary="Disco Duro" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={state.usuario_so} secondary="Usuario Windows" />
+                            <ListItemText primary={state.nombre} secondary="Nombre Equipo" />
                         </ListItem>
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <List disablePadding>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={state.modelos} secondary="Modelo" />
+                            <ListItemText primary={state.modelo} secondary="Modelo" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary={state.serial_unidad} secondary="Serial Unidad" />
@@ -75,7 +75,7 @@ function InformacionEquipos({ id }) {
                             <ListItemText primary={state.ram} secondary="RAM" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={state.tipo_ram} secondary="Tipo RAM" />
+                            <ListItemText primary={state.tipo_ram_nombre} secondary="Tipo RAM" />
                         </ListItem>
                     </List>
                 </Grid>

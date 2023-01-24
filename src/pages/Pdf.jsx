@@ -57,7 +57,7 @@ export function Pdf() {
         getEquipo();
     },[id])
 
-    const title = `Nota de entrega - ${equipo.usuario_so} - ${equipo.marca} - ${equipo.usuario} ${equipo.usuario_cargo}.pdf`;
+    const title = `Nota de entrega - ${equipo.nombre} - ${equipo.tipo_equipo} - ${equipo.marca} ${equipo.modelo} - ${equipo.usuario}-${equipo.usuario_cargo}.pdf`;
 
     return (
         <Grid

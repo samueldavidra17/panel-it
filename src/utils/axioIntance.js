@@ -13,6 +13,6 @@ const intance = axios.create({
       } 
 });
 
-intance.defaults.baseURL = process.env.REACT_APP_API_URL+'/api/'; // --> url back api
+intance.defaults.baseURL = process.env.REACT_APP_API_URL+'api/'; // --> url back api
 
 export default intance

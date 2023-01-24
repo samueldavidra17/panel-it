@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/panel/static/js/main.c25475f8.js",
+    "static/media/Roboto-Regular.ttf": "/panel/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
+    "static/media/Roboto-Bold.ttf": "/panel/static/media/Roboto-Bold.f80816a5455d171f948d.ttf",
+    "static/media/bel-nota-de-entrega.jpg": "/panel/static/media/bel-nota-de-entrega.f77467a1c73588b39381.jpg",
+    "index.html": "/panel/index.html",
+    "main.c25475f8.js.map": "/panel/static/js/main.c25475f8.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.c25475f8.js"
+  ]
+}

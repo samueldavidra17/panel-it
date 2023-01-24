@@ -18,9 +18,7 @@ const AppRoute = () => {
   //peticion al back si se encuentra una sesion activa
   const getSesion = async () => {
     try {
-      const res = await axios.get('/', {
-        withCredentials: false
-      });
+      const res = await axios.get('/');
       if(res.status === 403) window.location.href = process.env.REACT_APP_BASE_URL+"login";;
     } catch (error) { 
       console.log(error);

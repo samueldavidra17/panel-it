@@ -121,7 +121,7 @@ function Form({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={state.tipo_ram_id}
+          input={state.tipo_ram}
           label={"Tipo Ram"}
           opciones={opciones.TiposRam}
           accion={(value) => changeEquipo('tipo_ram', value)}
@@ -195,7 +195,7 @@ function Form({ id }) {
       </Grid>
       <Grid item xs={12} sm={8}>
         <InputSeleccionar
-          input={state.so_id}
+          input={state.so}
           label={"Sistema Operativo"}
           opciones={opciones.So}
           accion={(value) => changeEquipo('so', value)}
