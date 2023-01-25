@@ -1,7 +1,7 @@
 {
   "name": "panel-it",
   "version": "0.1.0",
-  "homepage": "http://172.17.12.99/panel",
+  "homepage": "http://172.17.12.99/",
   "private": true,
   "dependencies": {
     "@emotion/react": "latest",

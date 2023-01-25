@@ -21,11 +21,12 @@ function Form({ id }) {
     }
     //estado de las opciones para los combox
     //(departamentos y empresas)
-    const [opciones, setOpciones] = useState({});
+    const [departamentos, setDepartamentos] = useState([]);
+    const [empresas, setEmpresas] = useState([]);
     const getOpciones = async () => {
         try {
             const empresas = await axios.get('empresas/');
-            setOpciones({...opciones, empresas: empresas.data});
+            setEmpresas(empresas.data);
         } catch (error) {
             console.log(error);
         }
@@ -36,17 +37,17 @@ function Form({ id }) {
             const departamentos = await axios.get('departamentos/', { // --> filtro de los depatamentos en base a la empresa
                 params: { empresas: value } 
             });
-            setOpciones({ ...opciones, departamentos: departamentos.data });
+            setDepartamentos(departamentos.data);
         } catch (error) {
             console.log(error);
         }
     }
 
     useEffect(() => {
-        getOpciones();
         if (id) {
             getUsuario();
         }
+        getOpciones();
     }, []);
     //peticion de los departamentos al seleccionar una empresa
     useEffect(() => {
@@ -58,9 +59,9 @@ function Form({ id }) {
         <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
                 <InputSeleccionar
-                    input={state.empresa}
+                    input={state?.empresa}
                     label={"Empresas"}
-                    opciones={opciones.empresas}
+                    opciones={empresas}
                     accion={(value) => {
                         changeUsuario('empresa', value);
                         opcionesDepartamentos(value);
@@ -71,9 +72,9 @@ function Form({ id }) {
                 <InputSeleccionar
                     input={state.departamento}
                     label={"Departamentos"}
-                    opciones={opciones.departamentos}
+                    opciones={departamentos}
                     accion={(value) => changeUsuario('departamento', value)}
-                    desactivado={!opciones.departamentos}
+                    desactivado={!departamentos.length > 0}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>

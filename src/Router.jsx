@@ -49,7 +49,7 @@ const AppRoute = () => {
 export default function Router() {
 
   return (
-    <BrowserRouter basename='/panel'>
+    <BrowserRouter>
       <Routes>
         <Route exact path="/*" element={<AppRoute />} />
         <Route exact path="/login" element={<Login />} />
