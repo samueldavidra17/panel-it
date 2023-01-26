@@ -134,7 +134,7 @@ const NotaEntrega = ({ equipo, textConditional, note, apps }) => {
           <>
             <Text style={styles.parrafo}>El equipo cuenta con los siguientes programas instalados:</Text>
             <View style={styles.lista}>
-              <Text style={styles.item}>{'- '+equipo.so}</Text>
+              <Text style={styles.item}>{'- '+equipo.so_nombre}</Text>
               {
                 apps.map((app) => (
                   <Text
