@@ -112,7 +112,7 @@ function Form({ id }) {
       </Grid>
       <Grid item xs={6} sm={4}>
         <InputSeleccionar
-          input={state.modelo_id}
+          input={state.modelo}
           label={"Modelo"}
           opciones={modelo}
           accion={(value) => changeEquipo('modelo', value)}

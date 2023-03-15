@@ -66,7 +66,7 @@ function InformacionEquipos({ id }) {
                 <Grid item xs={12} sm={4}>
                     <List disablePadding>
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={state.modelo} secondary="Modelo" />
+                            <ListItemText primary={state.modelo_nombre} secondary="Modelo" />
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary={state.serial_unidad} secondary="Serial Unidad" />

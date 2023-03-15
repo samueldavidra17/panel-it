@@ -180,20 +180,21 @@ export default function Tabla({ columns, rows, state, menu, history }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows
-                            .map((row) => {
-                                return (
-                                    <Row
-                                        key={row.id}
-                                        columns={columns}
-                                        row={row}
-                                        selected={selected}
-                                        handleSelected={handleSelected}
-                                        menu={menu}
-                                        history={history}
-                                    />
-                                );
-                            })}
+                        {
+                            rows?.map((row) => {
+                                    return (
+                                        <Row
+                                            key={row.id}
+                                            columns={columns}
+                                            row={row}
+                                            selected={selected}
+                                            handleSelected={handleSelected}
+                                            menu={menu}
+                                            history={history}
+                                        />
+                                    );
+                                })
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
