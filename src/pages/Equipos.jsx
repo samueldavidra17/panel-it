@@ -15,13 +15,14 @@ import { useNavigate } from 'react-router-dom';
 const columns = [
     { id: 'nombre', label: 'Nombre Equipo' },
     { id: 'usuario', label: 'Usuario Responsable' },
+    { id: 'estatu', label: 'Estado' },
     { id: 'ubicacion', label: 'Ubicación' },
     { id: 'departamento', label: 'Departamento' },
     { id: 'serial', label: 'Serial' },
     { id: 'csb', label: 'CSB' },
     { id: 'tipo_equipo', label: 'Tipo Equipo' },
     { id: 'modelo', label: 'Modelo' },
-    { id: 'marca', label: 'Marca' }
+    { id: 'marca', label: 'Marca' },
 ];
 //opciones activas en el menu
 const menu = [
